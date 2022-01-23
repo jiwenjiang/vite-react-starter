@@ -1,3 +1,4 @@
+import 'react-vant/lib/index.css';
 import './index.less';
 
 import React from 'react';
