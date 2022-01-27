@@ -1,15 +1,17 @@
-import FTabbar from '@/comps/Tabbar';
-import Topbar from '@/comps/TopBar';
 import React, { useEffect, useState } from 'react';
 import { Icon } from 'react-vant';
+
+import FTabbar from '@/comps/Tabbar';
+import Topbar from '@/comps/TopBar';
+
 import styles from './index.module.less';
 
 export default function App() {
-  const [height, setHeight] = useState(600);
+  const [_height, setHeight] = useState(600);
 
-  const onLoad = () => {
-    console.log('load');
-  };
+  // const onLoad = () => {
+  //   console.log('load');
+  // };
 
   useEffect(() => {
     const h = document.body.offsetHeight - 145;
@@ -25,13 +27,13 @@ export default function App() {
   );
 }
 
-function Card(data) {
+function Card(_data) {
   return (
     <div className={styles.cardBox}>
       <div className={styles.card}>
         <div className={styles.title}>
-          <Icon name="coupon" size={18}/>&nbsp;
-          平衡性训练
+          <Icon name="coupon" size={18} />
+          &nbsp; 平衡性训练
         </div>
         <div className={styles.kv}>
           <span className={styles.k}>姓名</span>

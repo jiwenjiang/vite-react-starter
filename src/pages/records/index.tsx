@@ -1,9 +1,11 @@
+import React, { useEffect, useState } from 'react';
+import { Badge, Icon, Popup } from 'react-vant';
+
 import FTabbar from '@/comps/Tabbar';
 import Topbar from '@/comps/TopBar';
 import Video from '@/comps/Video';
 import VList from '@/comps/VList';
-import React, { useEffect, useState } from 'react';
-import { Badge, Icon, Popup } from 'react-vant';
+
 import styles from './index.module.less';
 
 const data = [
@@ -17,7 +19,7 @@ export default function App() {
   const [height, setHeight] = useState(600);
   const [show, setShow] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
-  const [loadingText, setLoadingText] = useState('正在加载中');
+  // const [loadingText, setLoadingText] = useState('正在加载中');
 
   const onLoad = () => {
     console.log('load');
@@ -99,7 +101,7 @@ function ListItem() {
     <div className={styles.listBox}>
       <div className={styles.listTitle}>张三医生回复了2021-12-23 15:33的平衡性训练</div>
       <div className={styles.listDesc}>2021-08-09 12:33</div>
-      <Icon name="arrow" className={styles.arrow}/>
+      <Icon name="arrow" className={styles.arrow} />
     </div>
   );
 }

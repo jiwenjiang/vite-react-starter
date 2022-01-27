@@ -1,7 +1,9 @@
-import request from '@/service/request';
-import logo from '@/static/imgs/logo.png';
 import React, { useState } from 'react';
 import { Button, Field, Form, Icon } from 'react-vant';
+
+import request from '@/service/request';
+import logo from '@/static/imgs/logo.png';
+
 import styles from './index.module.less';
 
 function App() {

@@ -1,8 +1,10 @@
+import React, { useEffect, useState } from 'react';
+import { Tabs } from 'react-vant';
+
 import FTabbar from '@/comps/Tabbar';
 import Topbar from '@/comps/TopBar';
 import VList from '@/comps/VList';
-import React, { useEffect, useState } from 'react';
-import { Tabs } from 'react-vant';
+
 import styles from './index.module.less';
 
 const data = [
@@ -14,7 +16,7 @@ const data = [
 
 export default function App() {
   const [height, setHeight] = useState(600);
-  const [loadingText, setLoadingText] = useState('正在加载中');
+  // const [loadingText, setLoadingText] = useState('正在加载中');
 
   const onLoad = () => {
     console.log('load');

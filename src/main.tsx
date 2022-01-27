@@ -1,10 +1,13 @@
-import fetcher from '@/service/fetcher';
+import 'react-vant/lib/index.css';
+import './index.less';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'react-vant/lib/index.css';
 import { SWRConfig } from 'swr';
+
+import fetcher from '@/service/fetcher';
+
 import App from './App';
-import './index.less';
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,6 +1,8 @@
-import Video from '@/comps/Video';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import Video from '@/comps/Video';
+
 import styles from './index.module.less';
 
 function App() {
@@ -12,7 +14,12 @@ function App() {
 
   return (
     <div className="App">
-      <Video sources={[{src:"http://kfqn.fushuhealth.com/video/2022/01/12/1964cb483c154aad94e728017d5c54b2/1641957586632_ca903850aa0a4ba8bbb16f79d5aa4cb2_469295507.m3u8?pm3u8%2F0%2Fexpires%2F43200&e=1643119846&token=5tWU4jx332LnEkvTlzONEFO00KdRXQApLvLQGmIc:U7dmXCxF21qJQQ5i5UyRrDSU-nM="}]}></Video>
+      <Video
+        sources={[
+          {
+            src: 'http://kfqn.fushuhealth.com/video/2022/01/12/1964cb483c154aad94e728017d5c54b2/1641957586632_ca903850aa0a4ba8bbb16f79d5aa4cb2_469295507.m3u8?pm3u8%2F0%2Fexpires%2F43200&e=1643119846&token=5tWU4jx332LnEkvTlzONEFO00KdRXQApLvLQGmIc:U7dmXCxF21qJQQ5i5UyRrDSU-nM=',
+          },
+        ]}></Video>
 
       <header className="App-header">
         <p className="header">

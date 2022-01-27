@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabbar } from 'react-vant';
+
 import styles from './index.module.less';
 
 function FTabbar() {

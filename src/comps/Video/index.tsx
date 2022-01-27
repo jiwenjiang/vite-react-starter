@@ -1,7 +1,8 @@
-import React, { useEffect, useImperativeHandle, useRef } from 'react';
-import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import './reset-video.css';
+
+import React, { useEffect, useImperativeHandle, useRef } from 'react';
+import videojs from 'video.js';
 
 export default React.forwardRef(function FushuVideo(props: any, ref) {
   const videoNode = useRef(null);
