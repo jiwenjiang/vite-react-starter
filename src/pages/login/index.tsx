@@ -1,16 +1,17 @@
+import request from '@/service/request';
+import logo from '@/static/imgs/logo.png';
 import React, { useState } from 'react';
 import { Button, Field, Form, Icon } from 'react-vant';
-
-import logo from '@/static/imgs/logo.png';
-
 import styles from './index.module.less';
 
 function App() {
   const [form] = Form.useForm();
   const [isPsw, setIsPsw] = useState(true);
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log('form submit', values);
+    const a = await request({ url: '/login', data: values, method: 'POST' });
+    console.log('🚀 ~ file: index.tsx ~ line 14 ~ onFinish ~ a', a);
   };
 
   const changePsw = () => {
