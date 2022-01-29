@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Tabs } from 'react-vant';
-
 import FTabbar from '@/comps/Tabbar';
 import Topbar from '@/comps/TopBar';
 import VList from '@/comps/VList';
-
+import React, { useEffect, useState } from 'react';
+import { Tabs } from 'react-vant';
 import styles from './index.module.less';
 
 const data = [
@@ -24,7 +22,6 @@ export default function App() {
 
   useEffect(() => {
     const h = document.body.offsetHeight - 145;
-    console.log('🚀 ~ file: index.tsx ~ line 14 ~ useEffect ~ h', h);
     setHeight(h);
   }, []);
   return (

@@ -2246,6 +2246,11 @@ react@^17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
+reactutils@^5.10.0:
+  version "5.10.0"
+  resolved "https://registry.npmmirror.com/reactutils/download/reactutils-5.10.0.tgz#b6db379758b58018a3b569388a05689ed96c0ae5"
+  integrity sha512-KcSOdAYBAUVAe4PJLGeQsBhvRgDEO/2QNk2edvJ2VeDulgEfup7s+/l3Ax59GCpZvu6FIRP8hQW+SuhgmbB2bw==
+
 read-pkg-up@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-3.0.0.tgz#3ed496685dba0f8fe118d0691dc51f4a1ff96f07"

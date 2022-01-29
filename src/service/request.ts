@@ -28,6 +28,7 @@ const handleOps = ({ url, method = 'GET', data, ...options }: httpType) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      //   mode: 'no-cors',
       body: JSON.stringify(data),
     };
     return {
@@ -39,6 +40,7 @@ const handleOps = ({ url, method = 'GET', data, ...options }: httpType) => {
 
 const request = async (params: httpType) => {
   const { url, options } = handleOps(params);
+  console.log('🚀 ~ file: request.ts ~ line 43 ~ request ~ options', options);
 
   const res = await fetch(url, options);
   return res.json();

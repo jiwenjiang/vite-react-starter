@@ -16,6 +16,7 @@
     "react-router-dom": "^6.2.1",
     "react-tiny-virtual-list": "^2.2.0",
     "react-vant": "^1.4.12",
+    "reactutils": "^5.10.0",
     "swr": "^1.1.2",
     "video.js": "^7.17.0"
   },
