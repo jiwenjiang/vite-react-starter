@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
-import { Button, Field, Form, Icon } from 'react-vant';
-
 import request from '@/service/request';
 import logo from '@/static/imgs/logo.png';
-
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, Field, Form, Icon } from 'react-vant';
 import styles from './index.module.less';
 
 function App() {
   const [form] = Form.useForm();
   const [isPsw, setIsPsw] = useState(true);
+  const navigate = useNavigate();
 
   const onFinish = async (values) => {
     console.log('form submit', values);
-    const a = await request({ url: '/login', data: values, method: 'POST' });
-    console.log('🚀 ~ file: index.tsx ~ line 14 ~ onFinish ~ a', a);
+    const msg = await request({ url: '/login', data: values, method: 'POST' });
+    if (msg.success) {
+      sessionStorage.user = JSON.stringify(msg.data.user);
+      sessionStorage.token = msg.data.token;
+      navigate('/records');
+    }
+
+    console.log('🚀 ~ file: index.tsx ~ line 14 ~ onFinish ~ a', msg);
   };
+
+  useEffect(() => {}, []);
 
   const changePsw = () => {
     setIsPsw(!isPsw);

@@ -1,3 +1,5 @@
+import { Notify } from 'react-vant';
+
 const baseUrl = `http://platform-test.fushuhealth.com/recovery-wx`;
 
 type httpType = {
@@ -8,6 +10,7 @@ type httpType = {
 };
 
 const handleOps = ({ url, method = 'GET', data, ...options }: httpType) => {
+  const token = sessionStorage.token;
   if (method === 'GET') {
     const list = [];
     for (const key in data) {
@@ -16,19 +19,26 @@ const handleOps = ({ url, method = 'GET', data, ...options }: httpType) => {
     }
     const query = list.join('&');
     const allUrl = `${baseUrl}${url}?${query}`;
+    const ops = {
+      ...options,
+      headers: {
+        'recovery-token': token ?? '',
+      },
+    };
     return {
       url: allUrl,
-      options,
+      options: ops,
     };
   }
   if (['DELETE', 'POST', 'PUT'].includes(method)) {
     const allUrl = `${baseUrl}${url}`;
     const ops = {
+      ...options,
       method,
       headers: {
         'Content-Type': 'application/json',
+        'recovery-token': token ?? '',
       },
-      //   mode: 'no-cors',
       body: JSON.stringify(data),
     };
     return {
@@ -40,10 +50,18 @@ const handleOps = ({ url, method = 'GET', data, ...options }: httpType) => {
 
 const request = async (params: httpType) => {
   const { url, options } = handleOps(params);
-  console.log('🚀 ~ file: request.ts ~ line 43 ~ request ~ options', options);
 
   const res = await fetch(url, options);
-  return res.json();
+  const data = await res.json();
+  if (data && !data.success) {
+    if (data.code === 2) {
+      sessionStorage.token = '';
+      sessionStorage.user = '';
+      window.location.pathname = '/login';
+    }
+    Notify.show({ type: 'danger', message: data.message });
+  }
+  return data;
 };
 
 export default request;

@@ -1,56 +1,88 @@
-import React, { useEffect, useState } from 'react';
-import { Badge, Icon, Popup } from 'react-vant';
-
 import FTabbar from '@/comps/Tabbar';
 import Topbar from '@/comps/TopBar';
 import Video from '@/comps/Video';
 import VList from '@/comps/VList';
-
+import request from '@/service/request';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Badge, Icon, Popup } from 'react-vant';
 import styles from './index.module.less';
-
-const data = [
-  {
-    name: 1,
-    img: 'http://kfqn.fushuhealth.com/picture/2022/01/17/23c7c4262df6457bac4701b581b6b87d_wm.jpg?e=1643034341&token=5tWU4jx332LnEkvTlzONEFO00KdRXQApLvLQGmIc:JygC_h56_WVkjaGA2AmGFdEXqI0=',
-  },
-];
 
 export default function App() {
   const [height, setHeight] = useState(600);
   const [show, setShow] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
-  // const [loadingText, setLoadingText] = useState('正在加载中');
+  const [data, setData] = useState([]);
+  const [markList, setMarkList] = useState([]);
+  const total = useRef(1);
+  const params = useRef({ pageNo: 1, pageSize: 10, patientId: null });
+  const isLoading = useRef(false);
+  const [loadingText, setLoadingText] = useState('正在加载中');
+  const [currentVideo, setcurrentVideo] = useState('');
 
   const onLoad = () => {
-    console.log('load');
+    if (total.current > params.current.pageNo && !isLoading.current) {
+      isLoading.current = true;
+      params.current.pageNo++;
+      getList();
+    }
+  };
+
+  const getList = async (init?: boolean) => {
+    const res = await request({
+      url: '/record/list',
+      data: params.current,
+    });
+    total.current = res.data?.page?.totalPage;
+    if (total.current === params.current.pageNo) {
+      setLoadingText('无更多数据了~');
+    }
+    setData(init ? res.data?.trainingRecords : [...data, ...res.data?.trainingRecords]);
+    isLoading.current = false;
+  };
+
+  const getMarkList = async () => {
+    const res = await request({
+      url: '/remark/list',
+    });
+    setMarkList(res.data);
   };
 
   useEffect(() => {
     const h = document.body.offsetHeight - 145;
-    console.log('🚀 ~ file: index.tsx ~ line 14 ~ useEffect ~ h', h);
     setHeight(h);
+    const user = JSON.parse(sessionStorage.user);
+    params.current.patientId = user.id;
+    getList(true);
+    getMarkList();
   }, []);
 
   const open = () => {
     setShow(true);
   };
 
-  const cb = () => {
+  const cb = async (data) => {
+    const res = await request({
+      url: '/record/get',
+      data: { id: data.id },
+    });
+    setcurrentVideo(res.data.actions[0]?.videos?.[0]?.url);
     setShowVideo(true);
   };
   return (
     <div className={styles.box}>
-      <Topbar title="训练课程" />
+      <Topbar title="训练记录" />
       <div className={styles.reply} onClick={open}>
         训练回复
-        <Badge content="200" max="99" />
+        <Badge content={markList.length} max="99" />
       </div>
       <VList
         renderFn={(d) => Card(d, cb)}
         data={data}
-        itemSize={371}
+        itemSize={255}
         height={height}
         onLoad={onLoad}
+        loadingText={loadingText}
       />
       <FTabbar />
       <Popup
@@ -60,13 +92,13 @@ export default function App() {
         onClose={() => setShow(false)}>
         <div className={styles.popBox}>
           <div className={styles.innerBox}>
-            <ListItem />
-            <ListItem />
-            <ListItem />
-            <ListItem />
-            <ListItem />
-            <ListItem />
-            <ListItem />
+            {markList.map((v, i) => (
+              <Fragment key={i}>
+                <Link to={`/report/${v.id}`}>
+                  <ListItem {...v} />
+                </Link>
+              </Fragment>
+            ))}
           </div>
         </div>
       </Popup>
@@ -74,7 +106,7 @@ export default function App() {
         <Video
           sources={[
             {
-              src: 'http://kfqn.fushuhealth.com/video/2022/01/12/1964cb483c154aad94e728017d5c54b2/1641957586632_ca903850aa0a4ba8bbb16f79d5aa4cb2_469295507.m3u8?pm3u8%2F0%2Fexpires%2F43200&e=1643119846&token=5tWU4jx332LnEkvTlzONEFO00KdRXQApLvLQGmIc:U7dmXCxF21qJQQ5i5UyRrDSU-nM=',
+              src: currentVideo,
             },
           ]}></Video>
       </Popup>
@@ -84,23 +116,28 @@ export default function App() {
 
 function Card(data, cb) {
   const onCard = () => {
-    cb?.();
+    cb?.(data);
   };
   return (
     <div className={styles.cardBox} onClick={onCard}>
       <div className={styles.card}>
-        <img src={data?.img} alt="" />
-        <div className={styles.title}>平衡性训练</div>
+        <img src={data?.coverUrl} alt="" />
+        <div className={styles.title}>
+          <span>{data.planName}</span>
+          <span className={styles.trainingTime}>{data.trainingTime}</span>
+        </div>
       </div>
     </div>
   );
 }
 
-function ListItem() {
+function ListItem(v) {
   return (
     <div className={styles.listBox}>
-      <div className={styles.listTitle}>张三医生回复了2021-12-23 15:33的平衡性训练</div>
-      <div className={styles.listDesc}>2021-08-09 12:33</div>
+      <div className={styles.listTitle}>
+        {v.doctorName}回复了{v.trainingTime}的{v.planName}
+      </div>
+      <div className={styles.listDesc}>{v.created}</div>
       <Icon name="arrow" className={styles.arrow} />
     </div>
   );

@@ -1,6 +1,9 @@
 import Topbar from '@/comps/TopBar';
-import React from 'react';
-import { Circle, Icon, Tabs } from 'react-vant';
+import Video from '@/comps/Video';
+import request from '@/service/request';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Circle, Icon, Popup, Tabs } from 'react-vant';
 import { cls } from 'reactutils';
 import styles from './index.module.less';
 
@@ -10,16 +13,29 @@ const data = {
 };
 
 export default function App() {
+  const params = useParams();
+  const [detail, setDetail] = useState({ actions: [] });
+
+  const getDetail = async () => {
+    const res = await request({
+      url: '/record/get',
+      data: { id: params.id },
+    });
+    setDetail(res.data);
+  };
+  useEffect(() => {
+    getDetail();
+  }, []);
   return (
     <div className={styles.box}>
       <Topbar title="训练报告" showBack={true} />
-      <Card />
-      <Result data={data} />
+      <Card {...detail} />
+      <Result data={detail.actions} />
     </div>
   );
 }
 
-function Card(_data) {
+function Card(data) {
   return (
     <div className={styles.cardBox}>
       <div className={styles.card}>
@@ -28,11 +44,11 @@ function Card(_data) {
           &nbsp; 医生回复
         </div>
         <div className={styles.kv}>
-          <span className={styles.k}>张医生</span>
-          <span className={styles.v}>2021-08-09 12:33</span>
+          <span className={styles.k}>{data.doctorName}</span>
+          <span className={styles.v}>{data.time}</span>
         </div>
         <div className={styles.kv}>
-          <div className={styles.k}>临床描述</div>
+          <div className={styles.k}>{data.remark}</div>
         </div>
       </div>
     </div>
@@ -40,7 +56,29 @@ function Card(_data) {
 }
 
 function Result({ data }) {
-  console.log('🚀 ~ file: index.tsx ~ line 43 ~ Result ~ data', data);
+  const [active, setActive] = useState('');
+  const [current, setCurrent] = useState({ coverUrl: '' });
+  const [circleVal, setCircleVal] = useState({ rate: 0, text: '' });
+  const [currentVideo, setcurrentVideo] = useState('');
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    setActive(data[0]?.id);
+  }, [data]);
+
+  useEffect(() => {
+    const item = data.find((v) => v.id === active);
+    if (item) {
+      setCurrent(item);
+      setcurrentVideo(item.videos[0]?.url);
+      const rate =
+        item.finishCount / item.planCount > 1
+          ? 100
+          : ((item.finishCount / item.planCount) as any).toFixed(1) * 100;
+
+      setCircleVal({ text: rate + '%', rate });
+    }
+  }, [active]);
   return (
     <div className={styles.cardBox}>
       <div className={styles.card}>
@@ -48,16 +86,16 @@ function Result({ data }) {
           <Icon name="coupon" size={18} />
           &nbsp; 训练结果
         </div>
-        <Tabs active="b">
-          <Tabs.TabPane title="进行中" name="a"></Tabs.TabPane>
-          <Tabs.TabPane title="未开始" name="b"></Tabs.TabPane>
-          <Tabs.TabPane title="已完成" name="c"></Tabs.TabPane>
+        <Tabs active={active}>
+          {data.map((v) => (
+            <Tabs.TabPane title={v.actionName} name={v.id} key={v.id}></Tabs.TabPane>
+          ))}
         </Tabs>
-        <img src={data?.img} alt="" />
+        <img src={current?.coverUrl} alt="" onClick={() => setShowVideo(true)} />
         <div className={styles.circleBox}>
           <Circle
-            rate={60}
-            text="60%"
+            rate={circleVal.rate}
+            text={circleVal.text}
             strokeWidth={50}
             color={{
               '0%': '#366F9D',
@@ -66,6 +104,14 @@ function Result({ data }) {
           />
         </div>
       </div>
+      <Popup visible={showVideo} onClose={() => setShowVideo(false)}>
+        <Video
+          sources={[
+            {
+              src: currentVideo,
+            },
+          ]}></Video>
+      </Popup>
     </div>
   );
 }

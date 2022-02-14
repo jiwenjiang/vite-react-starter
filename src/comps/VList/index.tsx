@@ -22,7 +22,7 @@ export default function VList({
     }
   };
 
-  return (
+  return data.length > 0 ? (
     <VirtualList
       width="100%"
       height={height}
@@ -44,5 +44,15 @@ export default function VList({
         </div>
       )}
     />
+  ) : (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 500,
+      }}>
+      暂无数据
+    </div>
   );
 }
