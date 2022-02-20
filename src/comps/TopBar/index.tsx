@@ -1,16 +1,18 @@
-import React from 'react';
-import { NavBar } from 'react-vant';
-
+import React, { useEffect } from 'react';
 import styles from './index.module.less';
 
-function Topbar({ title, showBack = false }: { title: string; showBack?: boolean }) {
-  const back = () => {
-    history.back();
-  };
+function Topbar({ title }: { title: string; showBack?: boolean }) {
+  // const back = () => {
+  //   history.back();
+  // };
+
+  useEffect(() => {
+    document.title = title;
+  }, []);
 
   return (
     <div className={styles.box}>
-      <NavBar title={title} leftArrow={showBack} onClickLeft={() => back()} />
+      {/* <NavBar title={title} leftArrow={showBack} onClickLeft={() => back()} /> */}
     </div>
   );
 }

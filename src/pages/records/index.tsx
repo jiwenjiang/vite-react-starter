@@ -4,7 +4,7 @@ import Video from '@/comps/Video';
 import VList from '@/comps/VList';
 import request from '@/service/request';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Badge, Icon, Popup } from 'react-vant';
 import styles from './index.module.less';
 
@@ -19,6 +19,7 @@ export default function App() {
   const isLoading = useRef(false);
   const [loadingText, setLoadingText] = useState('正在加载中');
   const [currentVideo, setcurrentVideo] = useState('');
+  const navigate = useNavigate();
 
   const onLoad = () => {
     if (total.current > params.current.pageNo && !isLoading.current) {
@@ -49,12 +50,14 @@ export default function App() {
   };
 
   useEffect(() => {
-    const h = document.body.offsetHeight - 145;
+    const h = document.body.offsetHeight - 100;
     setHeight(h);
-    const user = JSON.parse(sessionStorage.user);
-    params.current.patientId = user.id;
-    getList(true);
-    getMarkList();
+    if (sessionStorage.user) {
+      const user = JSON.parse(sessionStorage.user);
+      params.current.patientId = user.id;
+      getList(true);
+      getMarkList();
+    }
   }, []);
 
   const open = () => {
@@ -68,6 +71,14 @@ export default function App() {
     });
     setcurrentVideo(res.data.actions[0]?.videos?.[0]?.url);
     setShowVideo(true);
+  };
+
+  const choose = async (v) => {
+    await request({
+      url: '/remark/read',
+      data: { id: v.id },
+    });
+    navigate(`/report/${v.recordId}`);
   };
   return (
     <div className={styles.box}>
@@ -94,9 +105,11 @@ export default function App() {
           <div className={styles.innerBox}>
             {markList.map((v, i) => (
               <Fragment key={i}>
-                <Link to={`/report/${v.id}`}>
-                  <ListItem {...v} />
-                </Link>
+                <div onClick={() => choose(v)}>
+                  <Link to={`/report/${v.recordId}`}>
+                    <ListItem {...v} />
+                  </Link>
+                </div>
               </Fragment>
             ))}
           </div>

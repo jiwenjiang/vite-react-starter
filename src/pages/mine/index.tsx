@@ -20,8 +20,8 @@ function Card() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.user);
-    if (user) {
+    if (sessionStorage.user) {
+      const user = JSON.parse(sessionStorage.user);
       setData(user);
     } else {
       navigate('/login');

@@ -6,10 +6,17 @@ type httpType = {
   url: string;
   method?: 'GET' | 'POST' | 'DELETE' | 'PUT';
   data?: any;
+  needLogin?: boolean;
   [key: string]: any;
 };
 
-const handleOps = ({ url, method = 'GET', data, ...options }: httpType) => {
+const handleOps = ({
+  url,
+  method = 'GET',
+  data,
+  needLogin = true,
+  ...options
+}: httpType) => {
   const token = sessionStorage.token;
   if (method === 'GET') {
     const list = [];
@@ -28,6 +35,7 @@ const handleOps = ({ url, method = 'GET', data, ...options }: httpType) => {
     return {
       url: allUrl,
       options: ops,
+      needLogin,
     };
   }
   if (['DELETE', 'POST', 'PUT'].includes(method)) {
@@ -44,17 +52,18 @@ const handleOps = ({ url, method = 'GET', data, ...options }: httpType) => {
     return {
       url: allUrl,
       options: ops,
+      needLogin,
     };
   }
 };
 
 const request = async (params: httpType) => {
-  const { url, options } = handleOps(params);
+  const { url, options, needLogin } = handleOps(params);
 
   const res = await fetch(url, options);
   const data = await res.json();
   if (data && !data.success) {
-    if (data.code === 2) {
+    if (data.code === 2 && needLogin) {
       sessionStorage.token = '';
       sessionStorage.user = '';
       window.location.pathname = '/login';

@@ -48,7 +48,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    const h = document.body.offsetHeight - 145;
+    const h = document.body.offsetHeight - 100;
     setHeight(h);
     getList(true);
   }, []);

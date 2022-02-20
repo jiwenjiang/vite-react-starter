@@ -1,4 +1,5 @@
 import request from '@/service/request';
+import { GetQueryString } from '@/service/utils';
 import logo from '@/static/imgs/logo.png';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,15 +12,16 @@ function App() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log('form submit', values);
-    const msg = await request({ url: '/login', data: values, method: 'POST' });
+    const msg = await request({
+      url: '/login',
+      data: { ...values, openId: GetQueryString('openId') },
+      method: 'POST',
+    });
     if (msg.success) {
       sessionStorage.user = JSON.stringify(msg.data.user);
       sessionStorage.token = msg.data.token;
       navigate('/records');
     }
-
-    console.log('🚀 ~ file: index.tsx ~ line 14 ~ onFinish ~ a', msg);
   };
 
   useEffect(() => {}, []);
