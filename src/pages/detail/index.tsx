@@ -1,8 +1,9 @@
 import Topbar from '@/comps/TopBar';
+import Video from '@/comps/Video';
 import request from '@/service/request';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Icon, Tag } from 'react-vant';
+import { Icon, Popup, Tag } from 'react-vant';
 import { cls } from 'reactutils';
 import styles from './index.module.less';
 
@@ -75,6 +76,14 @@ function Card({ data }) {
 }
 
 function Result({ data }) {
+  const [currentVideo, setcurrentVideo] = useState('');
+  const [showVideo, setShowVideo] = useState(false);
+
+  const choose = async (v) => {
+    setcurrentVideo(v.videos?.[0]?.url);
+    setShowVideo(true);
+  };
+
   return (
     <div className={styles.cardBox}>
       <div className={styles.card}>
@@ -84,7 +93,7 @@ function Result({ data }) {
         </div>
         {data.map((v, i) => (
           <div className={styles.cardItem} key={i}>
-            <img src={v?.actionCoverUrl} alt="" />
+            <img src={v?.actionCoverUrl} alt="" onClick={() => choose(v)} />
             <div className={cls(styles.title, styles.nobt)}>{v.actionName}</div>
             <div className={styles.kv}>
               <span className={styles.k}>单次持续时间</span>
@@ -101,6 +110,14 @@ function Result({ data }) {
           </div>
         ))}
       </div>
+      <Popup visible={showVideo} onClose={() => setShowVideo(false)}>
+        <Video
+          sources={[
+            {
+              src: currentVideo,
+            },
+          ]}></Video>
+      </Popup>
     </div>
   );
 }

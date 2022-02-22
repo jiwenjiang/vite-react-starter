@@ -32,7 +32,7 @@ function Card() {
       <div className={styles.card}>
         <div className={styles.title}>
           <Icon name="coupon" size={18} />
-          &nbsp; 平衡性训练
+          &nbsp; 用户详情
         </div>
         <div className={styles.kv}>
           <span className={styles.k}>姓名</span>

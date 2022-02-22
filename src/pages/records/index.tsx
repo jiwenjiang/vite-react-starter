@@ -80,6 +80,10 @@ export default function App() {
     });
     navigate(`/report/${v.recordId}`);
   };
+
+  const toReport = async (v) => {
+    navigate(`/report/${v.id}`);
+  };
   return (
     <div className={styles.box}>
       <Topbar title="训练记录" />
@@ -88,7 +92,7 @@ export default function App() {
         <Badge content={markList.length} max="99" />
       </div>
       <VList
-        renderFn={(d) => Card(d, cb)}
+        renderFn={(d) => Card(d, cb, toReport)}
         data={data}
         itemSize={255}
         height={height}
@@ -127,15 +131,19 @@ export default function App() {
   );
 }
 
-function Card(data, cb) {
+function Card(data, cb, choose) {
   const onCard = () => {
     cb?.(data);
   };
+
+  const chooseFn = async () => {
+    choose?.(data);
+  };
   return (
-    <div className={styles.cardBox} onClick={onCard}>
+    <div className={styles.cardBox}>
       <div className={styles.card}>
-        <img src={data?.coverUrl} alt="" />
-        <div className={styles.title}>
+        <img src={data?.coverUrl} alt="" onClick={onCard} />
+        <div className={styles.title} onClick={chooseFn}>
           <span>{data.planName}</span>
           <span className={styles.trainingTime}>{data.trainingTime}</span>
         </div>

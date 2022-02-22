@@ -51,7 +51,12 @@ function App() {
   };
 
   useEffect(() => {
-    auth();
+    let code = GetQueryString('code');
+    if (!code) {
+      window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf642fb7b35c55f30&redirect_uri=http%3A%2F%2Fwx-test.fushuhealth.com%2F&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect`;
+    } else {
+      auth();
+    }
   }, []);
 
   return <div></div>;
