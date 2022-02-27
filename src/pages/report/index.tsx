@@ -21,7 +21,9 @@ export default function App() {
       url: '/record/get',
       data: { id: params.id },
     });
-    setDetail(res.data);
+    if (res.success) {
+      setDetail(res.data);
+    }
   };
   useEffect(() => {
     getDetail();

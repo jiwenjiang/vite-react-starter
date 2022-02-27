@@ -12,6 +12,7 @@ function App() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    const returnUrl = GetQueryString('returnUrl');
     const msg = await request({
       url: '/login',
       data: { ...values, openId: GetQueryString('openId') },
@@ -20,7 +21,11 @@ function App() {
     if (msg.success) {
       sessionStorage.user = JSON.stringify(msg.data.user);
       sessionStorage.token = msg.data.token;
-      navigate('/records');
+      if (returnUrl) {
+        window.location.href = returnUrl;
+      } else {
+        navigate('/records');
+      }
     }
   };
 

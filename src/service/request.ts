@@ -66,7 +66,7 @@ const request = async (params: httpType) => {
     if (data.code === 2 && needLogin) {
       sessionStorage.token = '';
       sessionStorage.user = '';
-      window.location.pathname = '/login';
+      window.location.href = `/?returnUrl=${encodeURIComponent(window.location.href)}`;
     }
     Notify.show({ type: 'danger', message: data.message });
   }
