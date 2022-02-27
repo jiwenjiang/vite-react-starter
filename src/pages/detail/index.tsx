@@ -54,7 +54,7 @@ function Card({ data }) {
         </div>
         <div className={styles.kv}>
           <span className={styles.k}>训练动作</span>
-          <span className={styles.v}>共{data.totalTrainedCount}个</span>
+          <span className={styles.v}>共{data.planActionCount}个</span>
         </div>
         <div className={styles.kv}>
           <span className={styles.k}>训练时间</span>

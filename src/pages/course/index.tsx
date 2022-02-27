@@ -5,7 +5,7 @@ import VList from '@/comps/VList';
 import request from '@/service/request';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Popup, Tabs } from 'react-vant';
+import { Popup, Swiper, Tabs } from 'react-vant';
 import styles from './index.module.less';
 
 const filterNum = (v) => {
@@ -58,11 +58,7 @@ export default function App() {
   };
 
   const videoCb = async (data) => {
-    const res = await request({
-      url: '/plan/get',
-      data: { id: data.id },
-    });
-    setcurrentVideo(res.data.actions[0]?.videos?.[0]?.url);
+    setcurrentVideo(data?.videos?.[0]?.url);
     setShowVideo(true);
   };
 
@@ -90,21 +86,23 @@ export default function App() {
         loadingText={loadingText}
       />
       <FTabbar />
-      <Popup visible={showVideo} onClose={() => setShowVideo(false)}>
-        <Video
-          sources={[
-            {
-              src: currentVideo,
-            },
-          ]}></Video>
-      </Popup>
+      {showVideo && (
+        <Popup visible={showVideo} onClose={() => setShowVideo(false)}>
+          <Video
+            sources={[
+              {
+                src: currentVideo,
+              },
+            ]}></Video>
+        </Popup>
+      )}
     </div>
   );
 }
 
 function Card(data, videoCb, cb) {
-  const onVideo = () => {
-    videoCb?.(data);
+  const onVideo = (v) => {
+    videoCb?.(v);
   };
 
   const onCard = () => {
@@ -113,12 +111,18 @@ function Card(data, videoCb, cb) {
   return (
     <div className={styles.cardBox}>
       <div className={styles.card}>
-        <img src={data?.coverUrl} alt="" onClick={onVideo} />
+        <Swiper>
+          {data?.planActionListVos?.map((v, i) => (
+            <Swiper.Item key={i}>
+              <img src={v?.actionCoverUrl} alt="" onClick={() => onVideo(v)} />
+            </Swiper.Item>
+          ))}
+        </Swiper>
         <div onClick={onCard}>
           <div className={styles.title}>{data.planName}</div>
           <div className={styles.kv}>
             <span className={styles.k}>训练动作</span>
-            <span className={styles.v}>共{data.totalTrainedCount}个</span>
+            <span className={styles.v}>共{data.actionCount}个</span>
           </div>
           <div className={styles.kv}>
             <span className={styles.k}>训练时间</span>

@@ -26,15 +26,16 @@ export default React.forwardRef(function FushuVideo(props: any, ref) {
       ...props,
     });
     return () => {
-      console.log('destroy');
+      // player.current.pause();
+      console.log('destroy', player.current);
     };
-  }, [props.sources]);
+  }, []);
 
   return (
     <>
       <div data-vjs-player>
         <video
-          style={{ width: props.width ?? '100vw' }}
+          style={{ width: props.width ?? '100vw', maxHeight: '50vh' }}
           ref={videoNode}
           className="video-js vjs-big-play-centered"></video>
       </div>

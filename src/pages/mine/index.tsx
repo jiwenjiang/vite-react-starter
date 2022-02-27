@@ -27,6 +27,11 @@ function Card() {
       navigate('/login');
     }
   }, []);
+
+  const toPsw = () => {
+    navigate('/password');
+  };
+
   return (
     <div className={styles.cardBox}>
       <div className={styles.card}>
@@ -60,6 +65,9 @@ function Card() {
           <span className={styles.k}>课程数量</span>
           <span className={styles.v}>{data.trainedPlan}</span>
         </div>
+      </div>
+      <div className={styles.psw} onClick={toPsw}>
+        修改密码
       </div>
     </div>
   );

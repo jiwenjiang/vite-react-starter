@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import styles from './index.module.less';
+import { useEffect } from 'react';
 
 function Topbar({ title }: { title: string; showBack?: boolean }) {
   // const back = () => {
@@ -10,11 +9,7 @@ function Topbar({ title }: { title: string; showBack?: boolean }) {
     document.title = title;
   }, []);
 
-  return (
-    <div className={styles.box}>
-      {/* <NavBar title={title} leftArrow={showBack} onClickLeft={() => back()} /> */}
-    </div>
-  );
+  return null;
 }
 
 export default Topbar;
