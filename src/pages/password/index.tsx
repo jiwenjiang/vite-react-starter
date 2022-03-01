@@ -10,7 +10,6 @@ export default function App() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log('🚀 ~ file: index.tsx ~ line 14 ~ onFinish ~ values', values);
     const msg = await request({
       url: '/password/update',
       data: { password: values.password },

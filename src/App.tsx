@@ -1,27 +1,43 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Course from './pages/course';
-import Detail from './pages/detail';
-import Login from './pages/login';
-import Mine from './pages/mine';
-import Password from './pages/password';
-import Records from './pages/records';
-import Report from './pages/report';
-import Transition from './pages/transition';
+import { Loading } from 'react-vant';
+
+const Course = lazy(() => import('./pages/course'));
+const Login = lazy(() => import('./pages/login'));
+const Detail = lazy(() => import('./pages/detail'));
+const Mine = lazy(() => import('./pages/mine'));
+const Password = lazy(() => import('./pages/password'));
+const Records = lazy(() => import('./pages/records'));
+const Report = lazy(() => import('./pages/report'));
+const Transition = lazy(() => import('./pages/transition'));
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Transition />} />
-        <Route path="login" element={<Login />} />
-        <Route path="password" element={<Password />} />
-        <Route path="course" element={<Course />} />
-        <Route path="records" element={<Records />} />
-        <Route path="report/:id" element={<Report />} />
-        <Route path="courseDetail/:id" element={<Detail />} />
-        <Route path="mine" element={<Mine />} />
-      </Routes>
+      <Suspense
+        fallback={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100vw',
+              height: '100vh',
+            }}>
+            <Loading type="spinner" />
+          </div>
+        }>
+        <Routes>
+          <Route path="/" element={<Transition />} />
+          <Route path="login" element={<Login />} />
+          <Route path="password" element={<Password />} />
+          <Route path="course" element={<Course />} />
+          <Route path="records" element={<Records />} />
+          <Route path="report/:id" element={<Report />} />
+          <Route path="courseDetail/:id" element={<Detail />} />
+          <Route path="mine" element={<Mine />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
