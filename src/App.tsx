@@ -10,6 +10,7 @@ const Password = lazy(() => import('./pages/password'));
 const Records = lazy(() => import('./pages/records'));
 const Report = lazy(() => import('./pages/report'));
 const Transition = lazy(() => import('./pages/transition'));
+const Baseinfo = lazy(() => import('./pages/evaluate/baseinfo'));
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="report/:id" element={<Report />} />
           <Route path="courseDetail/:id" element={<Detail />} />
           <Route path="mine" element={<Mine />} />
+          <Route path="baseinfo" element={<Baseinfo />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
