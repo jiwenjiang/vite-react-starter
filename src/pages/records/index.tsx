@@ -119,7 +119,7 @@ export default function App() {
           </div>
         </div>
       </Popup>
-      <Popup visible={showVideo} onClose={() => setShowVideo(false)}>
+      <Popup visible={showVideo} destroyOnClose={true} onClose={() => setShowVideo(false)}>
         <Video
           sources={[
             {

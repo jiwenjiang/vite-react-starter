@@ -110,7 +110,10 @@ function Result({ data }) {
           </div>
         ))}
       </div>
-      <Popup visible={showVideo} onClose={() => setShowVideo(false)}>
+      <Popup
+        visible={showVideo}
+        destroyOnClose={true}
+        onClose={() => setShowVideo(false)}>
         <Video
           sources={[
             {

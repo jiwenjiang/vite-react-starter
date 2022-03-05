@@ -7,11 +7,6 @@ import { Circle, Icon, Popup, Tabs } from 'react-vant';
 import { cls } from 'reactutils';
 import styles from './index.module.less';
 
-const data = {
-  name: 1,
-  img: 'http://kfqn.fushuhealth.com/picture/2022/01/17/23c7c4262df6457bac4701b581b6b87d_wm.jpg?e=1643034341&token=5tWU4jx332LnEkvTlzONEFO00KdRXQApLvLQGmIc:JygC_h56_WVkjaGA2AmGFdEXqI0=',
-};
-
 export default function App() {
   const params = useParams();
   const [detail, setDetail] = useState({ actions: [] });
@@ -70,6 +65,10 @@ function Result({ data }) {
 
   useEffect(() => {
     const item = data.find((v) => v.id === active);
+    console.log(
+      '🚀 ~ file: index.tsx ~ line 68 ~ useEffect ~ item',
+      item?.videos[0]?.url,
+    );
     if (item) {
       setCurrent(item);
       setcurrentVideo(item.videos[0]?.url);
@@ -81,6 +80,10 @@ function Result({ data }) {
       setCircleVal({ text: rate + '%', rate });
     }
   }, [active]);
+
+  const changeTab = (e) => {
+    setActive(e);
+  };
   return (
     <div className={styles.cardBox}>
       <div className={styles.card}>
@@ -88,7 +91,7 @@ function Result({ data }) {
           <Icon name="coupon" size={18} />
           &nbsp; 训练结果
         </div>
-        <Tabs active={active}>
+        <Tabs active={active} onChange={changeTab}>
           {data.map((v) => (
             <Tabs.TabPane title={v.actionName} name={v.id} key={v.id}></Tabs.TabPane>
           ))}
@@ -106,7 +109,10 @@ function Result({ data }) {
           />
         </div>
       </div>
-      <Popup visible={showVideo} onClose={() => setShowVideo(false)}>
+      <Popup
+        visible={showVideo}
+        destroyOnClose={true}
+        onClose={() => setShowVideo(false)}>
         <Video
           sources={[
             {

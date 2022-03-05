@@ -7,9 +7,9 @@ type CustomItemProps = {
   value?: any;
   onChange?: (v: any) => void;
   placeholder?: string;
-} & FormItemProps;
+} & FormItemProps & { name: any };
 
-export function DatetimePickerItem(props: CustomItemProps) {
+export function DatetimePickerItem(props: Partial<CustomItemProps>) {
   const { value, onChange, ...fieldProps } = props;
   const [visible, setVisible] = useState(false);
 

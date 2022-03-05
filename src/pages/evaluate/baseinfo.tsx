@@ -43,7 +43,7 @@ export default function App() {
             <DatetimePickerItem placeholder="选择时间" />
           </Form.Item>
           <Button nativeType="submit" className={styles.btn} type="primary" block>
-            登录
+            开始评测
           </Button>
         </Form>
       </div>
