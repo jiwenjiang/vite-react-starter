@@ -17,6 +17,7 @@ function App() {
       url: '/login',
       data: { ...values, openId: GetQueryString('openId') },
       method: 'POST',
+      needLogin: false,
     });
     if (msg.success) {
       sessionStorage.user = JSON.stringify(msg.data.user);

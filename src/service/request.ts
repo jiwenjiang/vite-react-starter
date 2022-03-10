@@ -58,7 +58,7 @@ const handleOps = ({
 };
 
 const request = async (params: httpType) => {
-  const { url, options, needLogin } = handleOps(params);
+  const { url, options, needLogin = true } = handleOps(params);
 
   const res = await fetch(url, options);
   const data = await res.json();
