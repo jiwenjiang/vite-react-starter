@@ -1,3 +1,4 @@
+import legacy from '@vitejs/plugin-legacy';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import path from 'path';
 import { defineConfig } from 'vite';
@@ -9,7 +10,15 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'), // 别名
     },
   },
-  plugins: [reactRefresh()],
+  plugins: [
+    reactRefresh(),
+    legacy({
+      // 配置浏览器兼容性，支持IE版本11及以上
+      targets: ['ie >= 11'],
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
+    }),
+  ],
+
   // server: {
   //   port: 80,
   //   open: false, //自动打开

@@ -1,13 +1,26 @@
 import { DatetimePickerItem } from '@/comps/CombinedItems.tsx';
 import Topbar from '@/comps/TopBar';
+import { GenderType } from '@/service/const';
+import moment from 'moment';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Radio } from 'react-vant';
 import styles from './baseinfo.module.less';
 
 export default function App() {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const onFinish = async (values) => {
     console.log('🚀 ~ file: baseinfo.tsx ~ line 10 ~ App ~ values', values);
+    const params = { ...values, birthday: moment(values.birthday).format('X') };
+    const list = [];
+    console.log('🚀 ~ file: baseinfo.tsx ~ line 17 ~ onFinish ~ params', params);
+    for (const key in params) {
+      let str = `${key}=${params[key]}`;
+      list.push(str);
+    }
+    const query = list.join('&');
+    navigate(`/evaluate/grow?${query}`);
   };
 
   return (
@@ -21,22 +34,26 @@ export default function App() {
         <Form onFinish={onFinish} form={form}>
           <Form.Item
             labelWidth={60}
-            name="phone"
+            name="name"
             label="昵称"
             rules={[{ required: true, message: '请输入昵称' }]}
             required={false}>
             <Field />
           </Form.Item>
-          <Form.Item name="radio" label="性别" initialValue="r1" labelWidth={60}>
+          <Form.Item
+            name="gender"
+            label="性别"
+            initialValue={GenderType.MALE}
+            labelWidth={60}>
             <Radio.Group direction="horizontal">
-              <Radio name="r1" style={{ marginRight: 20 }}>
+              <Radio name={GenderType.MALE} style={{ marginRight: 20 }}>
                 男
               </Radio>
-              <Radio name="r2">女</Radio>
+              <Radio name={GenderType.FEMALE}>女</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item
-            name="datetime"
+            name="birthday"
             label="出生年月"
             customField
             rules={[{ required: true, message: '' }]}>

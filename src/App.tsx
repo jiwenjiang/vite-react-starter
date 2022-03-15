@@ -23,14 +23,28 @@ function App() {
     });
     const { appId, nonceStr, signature, timestamp } = res.data;
     window.wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId, // 必填，公众号的唯一标识
       timestamp, // 必填，生成签名的时间戳
       nonceStr, // 必填，生成签名的随机串
       signature, // 必填，签名
-      jsApiList: ['chooseImage'], // 必填，需要使用的JS接口列表
+      jsApiList: [
+        'chooseImage',
+        'uploadImage',
+        'downloadImage',
+        'startRecord',
+        'stopRecord',
+        'playVoice',
+        'stopVoice',
+        'uploadVoice',
+      ], // 必填，需要使用的JS接口列表
+    });
+    window.wx.error(function (res) {
+      console.log('🚀 ~ file: App.tsx ~ line 34 ~ window.wx.error ~ res', res);
+      // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
     });
     window.wx.ready(function () {
+      console.log('----------------------------------');
       // console.log('wxready!!!', window.wx);
     });
   };
