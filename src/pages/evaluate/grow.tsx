@@ -10,6 +10,7 @@ import {
   StopCircleO
 } from '@react-vant/icons';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Radio, Swiper, Tabs } from 'react-vant';
 import styles from './grow.module.less';
 
@@ -20,13 +21,18 @@ export default function App() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [isRecord, setIsRecord] = useState(false);
   const [isPlay, setIsPlay] = useState(false);
+  const navigate = useNavigate();
 
   const getList = async (init?: boolean) => {
     const res = await request({
       url: '/scaleTable/get',
       data: { code: 7, age: 10 },
     });
-    setData(res.data.subjects);
+    const datas = res.data.subjects?.map((v) => ({
+      ...v,
+      questions: v.questions?.map((c) => ({ ...c, remark: '', attachments: [] })),
+    }));
+    setData(datas);
   };
 
   useEffect(() => {
@@ -173,14 +179,21 @@ export default function App() {
       gender: GetQueryString('gender'),
       name: GetQueryString('name'),
       scaleTableCode: 7,
-      answers: data[active].questions?.map((v) => ({ ...v, questionSn: v.sn })),
+      answers: data[active].questions?.map((v) => ({
+        answerSn: v.answerSn ?? 1,
+        questionSn: v.sn,
+        remark: v.remark,
+        attachments: v.attachments,
+      })),
     };
     const res = await request({
       url: '/scaleRecord/save',
       data: params,
       method: 'POST',
     });
-    console.log('🚀 ~ file: grow.tsx ~ line 183 ~ submit ~ res', res);
+    if (res.success) {
+      navigate(`/evaluate/growDetail/${res.data.id}`);
+    }
   };
 
   return (
@@ -237,17 +250,20 @@ export default function App() {
                     <div className={styles.mediaBox}>
                       {v.questions[questionIndex]?.mediaList?.map((v, i) =>
                         v.type === MediaType.PICTURE ? (
-                          <img className={styles.imgs} alt="pic" key={i} src={v.localData} />
+                          <img
+                            className={styles.imgs}
+                            alt="pic"
+                            key={i}
+                            src={v.localData}
+                          />
                         ) : (
-                          <>
-                            <div className={styles.iconBox} key={i}>
-                              {isPlay ? (
-                                <PauseCircleO onClick={() => stopVoice(v.localData)} />
-                              ) : (
-                                <PlayCircleO onClick={() => startVoice(v.localData)} />
-                              )}
-                            </div>
-                          </>
+                          <div className={styles.iconBox} key={i}>
+                            {isPlay ? (
+                              <PauseCircleO onClick={() => stopVoice(v.localData)} />
+                            ) : (
+                              <PlayCircleO onClick={() => startVoice(v.localData)} />
+                            )}
+                          </div>
                         ),
                       )}
                       <div

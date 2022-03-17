@@ -1,0 +1,53 @@
+.box {
+  height: 100vh;
+  background-color: #f9fbfc;
+  :global(.rv-tabbar) {
+    border-top: 1px solid #f0f0f0;
+  }
+  :global(.rv-tabs__nav) {
+    background-color: transparent;
+  }
+}
+.cardBox {
+  background-color: transparent;
+  padding: 8px;
+}
+.card {
+  background-color: #fff;
+  background: #ffffff;
+  box-shadow: 2px 2px 4px 0px rgba(24, 24, 24, 0.05);
+  border: 1px solid #f0f0f0;
+  padding: 5px 15px;
+  font-size: 13px;
+  border-radius: 8px;
+  .title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #181818;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 15px;
+  }
+  .kv {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 0 8px;
+  }
+  .k {
+    color: #7f7f7f;
+  }
+  .v {
+    color: #181818;
+  }
+}
+.psw {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-color);
+  text-decoration: underline;
+  margin-top: 23px;
+}
