@@ -3,24 +3,21 @@ import Topbar from '@/comps/TopBar';
 import { GenderType } from '@/service/const';
 import moment from 'moment';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Radio } from 'react-vant';
 import styles from './baseinfo.module.less';
 
-export default function App() {
+export default function App({ submit }: { submit: Function }) {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const onFinish = async (values) => {
-    console.log('🚀 ~ file: baseinfo.tsx ~ line 10 ~ App ~ values', values);
     const params = { ...values, birthday: moment(values.birthday).format('X') };
-    const list = [];
-    console.log('🚀 ~ file: baseinfo.tsx ~ line 17 ~ onFinish ~ params', params);
-    for (const key in params) {
-      let str = `${key}=${params[key]}`;
-      list.push(str);
-    }
-    const query = list.join('&');
-    navigate(`/evaluate/grow?${query}`);
+    submit(params)
+    // const list = [];
+    // for (const key in params) {
+    //   let str = `${key}=${params[key]}`;
+    //   list.push(str);
+    // }
+    // const query = list.join('&');
+    // navigate(`/evaluate/grow?${query}`);
   };
 
   return (

@@ -14,6 +14,7 @@ const Transition = lazy(() => import('./pages/transition'));
 const Baseinfo = lazy(() => import('./pages/evaluate/baseinfo'));
 const Grow = lazy(() => import('./pages/evaluate/grow'));
 const GrowDetail = lazy(() => import('./pages/evaluate/growDetail'));
+const FeelList = lazy(() => import('./pages/evaluate/feelList'));
 
 function App() {
   const wxConfig = async () => {
@@ -80,6 +81,7 @@ function App() {
             <Route path="baseinfo" element={<Baseinfo />} />
             <Route path="grow" element={<Grow />} />
             <Route path="growDetail/:id" element={<GrowDetail />} />
+            <Route path="feelList" element={<FeelList />} />
           </Route>
         </Routes>
       </Suspense>
