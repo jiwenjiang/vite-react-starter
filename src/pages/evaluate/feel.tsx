@@ -9,6 +9,7 @@ import {
     PlayCircleO,
     StopCircleO
 } from '@react-vant/icons';
+import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Radio } from 'react-vant';
@@ -25,6 +26,7 @@ export default function App() {
   const navigate = useNavigate();
   const [baseinfo, setBaseinfo] = useState();
   const title = useRef();
+  const age = useRef(1);
   const [currentData, setCurrentData] = useState<
     Partial<{
       name: string;
@@ -39,7 +41,7 @@ export default function App() {
   const getList = async () => {
     const res = await request({
       url: '/scaleTable/get',
-      data: { code: GetQueryString('code'), age: 10 },
+      data: { code: GetQueryString('code'), age: age.current },
     });
     const datas = res.data.subjects?.map((v) => ({
       ...v,
@@ -189,10 +191,17 @@ export default function App() {
       if (['1', '2', '3', '4'].includes(GetQueryString('code'))) {
         navigate(`/evaluate/zibizheng/${res.data.id}`);
       }
+      if (['6'].includes(GetQueryString('code'))) {
+        navigate(`/evaluate/feelDetail/${res.data.id}`);
+      }
     }
   };
 
   const baseSubmit = (params) => {
+    console.log('🚀 ~ file: feel.tsx ~ line 201 ~ baseSubmit ~ params', params);
+    const a = moment().diff(moment(params.birthday, 'X'), 'year');
+    console.log('🚀 ~ file: feel.tsx ~ line 202 ~ baseSubmit ~ a', a);
+    age.current = a;
     setBaseinfo(params);
   };
 

@@ -15,6 +15,7 @@ const Grow = lazy(() => import('./pages/evaluate/grow'));
 const GrowDetail = lazy(() => import('./pages/evaluate/growDetail'));
 const FeelList = lazy(() => import('./pages/evaluate/feelList'));
 const Feel = lazy(() => import('./pages/evaluate/feel'));
+const FeelDetail = lazy(() => import('./pages/evaluate/feelDetail'));
 const Zibizheng = lazy(() => import('./pages/evaluate/zibizheng'));
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
             <Route path="growDetail/:id" element={<GrowDetail />} />
             <Route path="feelList" element={<FeelList />} />
             <Route path="feel" element={<Feel />} />
+            <Route path="feelDetail/:id" element={<FeelDetail />} />
             <Route path="zibizheng/:id" element={<Zibizheng />} />
           </Route>
         </Routes>

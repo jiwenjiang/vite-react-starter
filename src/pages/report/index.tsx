@@ -1,9 +1,11 @@
 import Topbar from '@/comps/TopBar';
 import Video from '@/comps/Video';
 import request from '@/service/request';
+import huifuImg from '@/static/imgs/huifu.jpg';
+import jieguoImg from '@/static/imgs/jieguo.png';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Circle, Icon, Popup, Tabs } from 'react-vant';
+import { Circle, Popup, Tabs } from 'react-vant';
 import { cls } from 'reactutils';
 import styles from './index.module.less';
 
@@ -37,7 +39,7 @@ function Card(data) {
     <div className={styles.cardBox}>
       <div className={styles.card}>
         <div className={styles.title}>
-          <Icon name="coupon" size={18} />
+          <img src={huifuImg} alt="1" />
           &nbsp; 医生回复
         </div>
         <div className={styles.kv}>
@@ -65,10 +67,6 @@ function Result({ data }) {
 
   useEffect(() => {
     const item = data.find((v) => v.id === active);
-    console.log(
-      '🚀 ~ file: index.tsx ~ line 68 ~ useEffect ~ item',
-      item?.videos[0]?.url,
-    );
     if (item) {
       setCurrent(item);
       setcurrentVideo(item.videos[0]?.url);
@@ -88,7 +86,7 @@ function Result({ data }) {
     <div className={styles.cardBox}>
       <div className={styles.card}>
         <div className={cls(styles.title, styles.nomb)}>
-          <Icon name="coupon" size={18} />
+          <img src={jieguoImg} alt="1" />
           &nbsp; 训练结果
         </div>
         <Tabs active={active} onChange={changeTab}>

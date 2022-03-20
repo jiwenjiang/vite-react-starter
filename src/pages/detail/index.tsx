@@ -1,9 +1,11 @@
 import Topbar from '@/comps/TopBar';
 import Video from '@/comps/Video';
 import request from '@/service/request';
+import jibenImg from '@/static/imgs/jibenImg.png';
+import jieguoImg from '@/static/imgs/jieguo.png';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Icon, Popup, Tag } from 'react-vant';
+import { Popup, Tag } from 'react-vant';
 import { cls } from 'reactutils';
 import styles from './index.module.less';
 
@@ -41,7 +43,7 @@ function Card({ data }) {
     <div className={styles.cardBox}>
       <div className={styles.card}>
         <div className={styles.title}>
-          <Icon name="coupon" size={18} />
+          <img src={jibenImg} alt="1" />
           &nbsp; 基本信息
         </div>
         <div className={styles.kv}>
@@ -88,7 +90,7 @@ function Result({ data }) {
     <div className={styles.cardBox}>
       <div className={styles.card}>
         <div className={cls(styles.title, styles.nomb)}>
-          <Icon name="coupon" size={18} />
+          <img src={jieguoImg} alt="1" />
           &nbsp; 训练动作（共{data.length}个）
         </div>
         {data.map((v, i) => (

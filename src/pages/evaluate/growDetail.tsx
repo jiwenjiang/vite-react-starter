@@ -1,11 +1,14 @@
 import Topbar from '@/comps/TopBar';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
+import jibenImg from '@/static/imgs/jibenImg.png';
+import pingceImg from '@/static/imgs/pingce.png';
+import tixingImg from '@/static/imgs/tixing.png';
 import { PauseCircleO, PlayCircleO } from '@react-vant/icons';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Icon } from 'react-vant';
 import styles from './growDetail.module.less';
+
 
 export default function App() {
   return (
@@ -49,7 +52,7 @@ function Card() {
       <div className={styles.cardBox}>
         <div className={styles.card}>
           <div className={styles.title}>
-            <Icon name="coupon" size={18} />
+            <img src={jibenImg} alt="1" />
             &nbsp; 基本信息
           </div>
           <div className={styles.kv}>
@@ -70,7 +73,11 @@ function Card() {
         <div className={styles.cardBox} key={i}>
           <div className={styles.card}>
             <div className={styles.title}>
-              <Icon name="coupon" size={18} />
+              {v.type === '需要尽快就医' ? (
+                <img src={tixingImg} alt="1" />
+              ) : (
+                <img src={pingceImg} alt="1" />
+              )}
               &nbsp; {v.type}
             </div>
             {v.results?.map((c, i) => (

@@ -1,8 +1,11 @@
 import Topbar from '@/comps/TopBar';
 import request from '@/service/request';
+import fenxiImg from '@/static/imgs/fenxi.png';
+import pingceImg from '@/static/imgs/pingce.png';
+import yonghuImg from '@/static/imgs/yonghu.jpg';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Icon, Tag } from 'react-vant';
+import { Button, Tag } from 'react-vant';
 import styles from './zibizheng.module.less';
 
 const colorMap = {
@@ -50,7 +53,7 @@ function Card() {
       <div className={styles.cardBox}>
         <div className={styles.card}>
           <div className={styles.title}>
-            <Icon name="coupon" size={18} />
+            <img src={yonghuImg} alt="1" />
             &nbsp; 用户详情
           </div>
           <div className={styles.kv}>
@@ -70,7 +73,7 @@ function Card() {
       <div className={styles.cardBox}>
         <div className={styles.card}>
           <div className={styles.title}>
-            <Icon name="coupon" size={18} />
+            <img src={pingceImg} alt="1" />
             &nbsp; 测评结果
           </div>
           <div className={styles.scoreBox}>
@@ -89,7 +92,7 @@ function Card() {
       <div className={styles.cardBox}>
         <div className={styles.card}>
           <div className={styles.title}>
-            <Icon name="coupon" size={18} />
+            <img src={fenxiImg} alt="1" />
             &nbsp; 结果分析
           </div>
           <div className={styles.scoreBox}>
@@ -98,12 +101,11 @@ function Card() {
           <div className={styles.remark}>{data.remark}</div>
         </div>
       </div>
-    <div className={styles.btnBox}>
-    <Button className={styles.btn} type="primary" block>
-        对报告有疑问？立刻联系客服
-      </Button>
-    </div>
-    
+      <div className={styles.btnBox}>
+        <Button className={styles.btn} type="primary" block>
+          对报告有疑问？立刻联系客服
+        </Button>
+      </div>
     </>
   );
 }
