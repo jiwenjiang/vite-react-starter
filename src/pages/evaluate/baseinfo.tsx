@@ -10,7 +10,7 @@ export default function App({ submit }: { submit: Function }) {
   const [form] = Form.useForm();
   const onFinish = async (values) => {
     const params = { ...values, birthday: moment(values.birthday).format('X') };
-    submit(params)
+    submit(params);
     // const list = [];
     // for (const key in params) {
     //   let str = `${key}=${params[key]}`;

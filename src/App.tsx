@@ -11,10 +11,11 @@ const Password = lazy(() => import('./pages/password'));
 const Records = lazy(() => import('./pages/records'));
 const Report = lazy(() => import('./pages/report'));
 const Transition = lazy(() => import('./pages/transition'));
-const Baseinfo = lazy(() => import('./pages/evaluate/baseinfo'));
 const Grow = lazy(() => import('./pages/evaluate/grow'));
 const GrowDetail = lazy(() => import('./pages/evaluate/growDetail'));
 const FeelList = lazy(() => import('./pages/evaluate/feelList'));
+const Feel = lazy(() => import('./pages/evaluate/feel'));
+const Zibizheng = lazy(() => import('./pages/evaluate/zibizheng'));
 
 function App() {
   const wxConfig = async () => {
@@ -78,10 +79,11 @@ function App() {
           <Route path="courseDetail/:id" element={<Detail />} />
           <Route path="mine" element={<Mine />} />
           <Route path="evaluate">
-            <Route path="baseinfo" element={<Baseinfo />} />
             <Route path="grow" element={<Grow />} />
             <Route path="growDetail/:id" element={<GrowDetail />} />
             <Route path="feelList" element={<FeelList />} />
+            <Route path="feel" element={<Feel />} />
+            <Route path="zibizheng/:id" element={<Zibizheng />} />
           </Route>
         </Routes>
       </Suspense>

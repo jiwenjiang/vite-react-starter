@@ -1,39 +1,54 @@
 import Topbar from '@/comps/TopBar';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
+import { GetQueryString } from '@/service/utils';
 import {
-  Audio,
-  PauseCircleO,
-  Photograph,
-  PlayCircleO,
-  StopCircleO
+    Audio,
+    PauseCircleO,
+    Photograph,
+    PlayCircleO,
+    StopCircleO
 } from '@react-vant/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Field, Form, Radio, Swiper, Tabs } from 'react-vant';
+import { Button, Field, Form, Radio } from 'react-vant';
 import Baseinfo from './baseinfo';
 import styles from './grow.module.less';
 
 export default function App() {
   const [data, setData] = useState([]);
-  const [active, setActive] = useState(0);
+  const [active] = useState(0);
   const [form] = Form.useForm();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [isRecord, setIsRecord] = useState(false);
   const [isPlay, setIsPlay] = useState(false);
   const navigate = useNavigate();
-  const [baseinfo, setBaseinfo] = useState(null);
+  const [baseinfo, setBaseinfo] = useState();
+  const title = useRef();
+  const [currentData, setCurrentData] = useState<
+    Partial<{
+      name: string;
+      answers: any[];
+      type: number;
+      answerSn: number;
+      remark: string;
+      mediaList: any[];
+    }>
+  >({});
 
-  const getList = async (init?: boolean) => {
+  const getList = async () => {
     const res = await request({
       url: '/scaleTable/get',
-      data: { code: 7, age: 10 },
+      data: { code: GetQueryString('code'), age: 10 },
     });
     const datas = res.data.subjects?.map((v) => ({
       ...v,
       questions: v.questions?.map((c) => ({ ...c, remark: '', attachments: [] })),
     }));
+    title.current = res.data.name;
     setData(datas);
+    setCurrentData(datas[0].questions[0]);
+    console.log('🚀 ~ file: feel.tsx ~ line 51 ~ getList ~ title.current', title.current);
   };
 
   useEffect(() => {
@@ -42,16 +57,14 @@ export default function App() {
     }
   }, [baseinfo]);
 
-  const changeTab = (v) => {
-    setActive(v);
-  };
-
   const pre = () => {
     setQuestionIndex(questionIndex - 1);
+    setCurrentData(data[0].questions[questionIndex - 1]);
   };
 
   const next = () => {
     setQuestionIndex(questionIndex + 1);
+    setCurrentData(data[0].questions[questionIndex + 1]);
   };
 
   const changeVal = (e, q, m) => {
@@ -159,7 +172,7 @@ export default function App() {
   const submit = async () => {
     const params = {
       ...(baseinfo as object),
-      scaleTableCode: 7,
+      scaleTableCode: GetQueryString('code'),
       answers: data[active].questions?.map((v) => ({
         answerSn: v.answerSn ?? 1,
         questionSn: v.sn,
@@ -173,7 +186,9 @@ export default function App() {
       method: 'POST',
     });
     if (res.success) {
-      navigate(`/evaluate/growDetail/${res.data.id}`);
+      if (['1', '2', '3', '4'].includes(GetQueryString('code'))) {
+        navigate(`/evaluate/zibizheng/${res.data.id}`);
+      }
     }
   };
 
@@ -188,95 +203,61 @@ export default function App() {
       ) : (
         <div className={styles.box}>
           <Topbar title="儿童发育里程碑评测" />
-          <Tabs
-            active={active}
-            onChange={changeTab}
-            ellipsis={false}
-            animated
-            swipeThreshold={3}>
-            {data.map((v, i) => (
-              <Tabs.TabPane title={v.subject} name={i} key={i}>
-                <div className={styles.tabBox} key={i}>
-                  {v.questions[questionIndex]?.carousels?.length > 0 && (
-                    <Swiper autoplay={5000}>
-                      {v.questions[questionIndex].carousels.map((m) => (
-                        <Swiper.Item key={m}>
-                          <div
-                            className={styles.swiperBox}
-                            style={{
-                              backgroundImage: `url(${m})`,
-                            }}></div>
-                        </Swiper.Item>
-                      ))}
-                    </Swiper>
-                  )}
-                  <div className={styles.tibox}>
-                    <div style={{ marginBottom: 4 }}>
-                      {questionIndex + 1}/{data[i].sum}
-                    </div>
-                    <Form form={form} layout="vertical">
-                      <div className={styles.title}>
-                        {v.questions[questionIndex]?.name}
-                      </div>
-                      <Radio.Group
-                        value={v.questions[questionIndex]?.answerSn ?? 1}
-                        onChange={(e) =>
-                          changeVal(e, v.questions[questionIndex], 'answerSn')
-                        }>
-                        {v.questions[questionIndex]?.answers.map((c) => (
-                          <Radio name={c.sn} key={c.sn}>
-                            {c.content}
-                          </Radio>
-                        ))}
-                      </Radio.Group>
-                      <div className={styles.title}>补充说明（非必填）</div>
-                      <Field
-                        rows={3}
-                        onChange={(e) =>
-                          changeVal(e, v.questions[questionIndex], 'remark')
-                        }
-                        value={v.questions[questionIndex]?.remark ?? ''}
-                        type="textarea"
-                        placeholder="填写补充说明"
-                      />
-                      <div className={styles.mediaBox}>
-                        {v.questions[questionIndex]?.mediaList?.map((v, i) =>
-                          v.type === MediaType.PICTURE ? (
-                            <img
-                              className={styles.imgs}
-                              alt="pic"
-                              key={i}
-                              src={v.localData}
-                            />
-                          ) : (
-                            <div className={styles.iconBox} key={i}>
-                              {isPlay ? (
-                                <PauseCircleO onClick={() => stopVoice(v.localData)} />
-                              ) : (
-                                <PlayCircleO onClick={() => startVoice(v.localData)} />
-                              )}
-                            </div>
-                          ),
+          <div className={styles.tabBox}>
+            <div className={styles.title2}>{title.current}</div>
+            <div className={styles.tibox}>
+              <div style={{ marginBottom: 4 }}>
+                {questionIndex + 1}/{data[0]?.sum}
+              </div>
+              <Form form={form} layout="vertical">
+                <div className={styles.title}>{currentData?.name}</div>
+                <Radio.Group
+                  value={currentData?.answerSn ?? 1}
+                  onChange={(e) => changeVal(e, currentData, 'answerSn')}>
+                  {currentData?.answers?.map((c) => (
+                    <Radio name={c.sn} key={c.sn}>
+                      {c.content}
+                    </Radio>
+                  ))}
+                </Radio.Group>
+                <div className={styles.title}>补充说明（非必填）</div>
+                <Field
+                  rows={3}
+                  onChange={(e) => changeVal(e, currentData, 'remark')}
+                  value={currentData?.remark ?? ''}
+                  type="textarea"
+                  placeholder="填写补充说明"
+                />
+                <div className={styles.mediaBox}>
+                  {currentData?.mediaList?.map((v, i) =>
+                    v.type === MediaType.PICTURE ? (
+                      <img className={styles.imgs} alt="pic" key={i} src={v.localData} />
+                    ) : (
+                      <div className={styles.iconBox} key={i}>
+                        {isPlay ? (
+                          <PauseCircleO onClick={() => stopVoice(v.localData)} />
+                        ) : (
+                          <PlayCircleO onClick={() => startVoice(v.localData)} />
                         )}
-                        <div
-                          className={styles.iconBox}
-                          onClick={() => chooseImg(MediaType.PICTURE)}>
-                          <Photograph />
-                        </div>
-                        <div
-                          className={styles.iconBox}
-                          onClick={() => {
-                            isRecord ? stopRecord() : startRecord();
-                          }}>
-                          {isRecord ? <StopCircleO /> : <Audio />}
-                        </div>
                       </div>
-                    </Form>
+                    ),
+                  )}
+                  <div
+                    className={styles.iconBox}
+                    onClick={() => chooseImg(MediaType.PICTURE)}>
+                    <Photograph />
+                  </div>
+                  <div
+                    className={styles.iconBox}
+                    onClick={() => {
+                      isRecord ? stopRecord() : startRecord();
+                    }}>
+                    {isRecord ? <StopCircleO /> : <Audio />}
                   </div>
                 </div>
-              </Tabs.TabPane>
-            ))}
-          </Tabs>
+              </Form>
+            </div>
+          </div>
           <div className={styles.btnbox}>
             {questionIndex === data[active]?.questions?.length - 1 ? (
               <>
