@@ -4,7 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { Icon } from 'react-vant';
 import styles from './feelList.module.less';
 
-const list = ['感统量表1', '感统量表2', '感统量表3', '感统量表4'];
+const list = [
+  '改良版幼儿孤独症筛查量表（M-CHAT-R）',
+  '克氏孤独症行为量表 （CABS）',
+  '自闭症行为量表（ABC）',
+  '儿童自闭症评定量表(CARS)',
+];
 
 export default function App() {
   const navigate = useNavigate();
@@ -15,7 +20,7 @@ export default function App() {
 
   return (
     <div className={styles.box}>
-      <Topbar title="儿童发育里程碑评定结果" />
+      <Topbar title="儿童自闭症" />
       {list.map((v, i) => (
         <div key={i}>
           <div className={styles.listBox} onClick={() => nav(i + 1)}>

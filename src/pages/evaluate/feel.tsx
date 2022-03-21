@@ -3,13 +3,12 @@ import { MediaType } from '@/service/const';
 import request from '@/service/request';
 import { GetQueryString } from '@/service/utils';
 import {
-    Audio,
-    PauseCircleO,
-    Photograph,
-    PlayCircleO,
-    StopCircleO
+  Audio,
+  PauseCircleO,
+  Photograph,
+  PlayCircleO,
+  StopCircleO
 } from '@react-vant/icons';
-import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Radio } from 'react-vant';
@@ -25,7 +24,7 @@ export default function App() {
   const [isPlay, setIsPlay] = useState(false);
   const navigate = useNavigate();
   const [baseinfo, setBaseinfo] = useState();
-  const title = useRef();
+  const [title, setTitle] = useState('');
   const age = useRef(1);
   const [currentData, setCurrentData] = useState<
     Partial<{
@@ -41,16 +40,15 @@ export default function App() {
   const getList = async () => {
     const res = await request({
       url: '/scaleTable/get',
-      data: { code: GetQueryString('code'), age: age.current },
+      data: { code: GetQueryString('code'), birthday: age.current },
     });
     const datas = res.data.subjects?.map((v) => ({
       ...v,
       questions: v.questions?.map((c) => ({ ...c, remark: '', attachments: [] })),
     }));
-    title.current = res.data.name;
+    setTitle(res.data.name);
     setData(datas);
     setCurrentData(datas[0].questions[0]);
-    console.log('🚀 ~ file: feel.tsx ~ line 51 ~ getList ~ title.current', title.current);
   };
 
   useEffect(() => {
@@ -198,10 +196,9 @@ export default function App() {
   };
 
   const baseSubmit = (params) => {
-    console.log('🚀 ~ file: feel.tsx ~ line 201 ~ baseSubmit ~ params', params);
-    const a = moment().diff(moment(params.birthday, 'X'), 'year');
-    console.log('🚀 ~ file: feel.tsx ~ line 202 ~ baseSubmit ~ a', a);
-    age.current = a;
+    // const a = moment().diff(moment(params.birthday, 'X'), 'year');
+    // age.current = a;
+    age.current = params.birthday;
     setBaseinfo(params);
   };
 
@@ -211,9 +208,9 @@ export default function App() {
         <Baseinfo submit={baseSubmit} />
       ) : (
         <div className={styles.box}>
-          <Topbar title="儿童发育里程碑评测" />
+          <Topbar title={title} />
           <div className={styles.tabBox}>
-            <div className={styles.title2}>{title.current}</div>
+            {/* <div className={styles.title2}>{title}</div> */}
             <div className={styles.tibox}>
               <div style={{ marginBottom: 4 }}>
                 {questionIndex + 1}/{data[0]?.sum}

@@ -2,7 +2,7 @@ import { DatetimePickerItem } from '@/comps/CombinedItems.tsx';
 import Topbar from '@/comps/TopBar';
 import { GenderType } from '@/service/const';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Field, Form, Radio } from 'react-vant';
 import styles from './baseinfo.module.less';
 
@@ -11,14 +11,13 @@ export default function App({ submit }: { submit: Function }) {
   const onFinish = async (values) => {
     const params = { ...values, birthday: moment(values.birthday).format('X') };
     submit(params);
-    // const list = [];
-    // for (const key in params) {
-    //   let str = `${key}=${params[key]}`;
-    //   list.push(str);
-    // }
-    // const query = list.join('&');
-    // navigate(`/evaluate/grow?${query}`);
   };
+
+  useEffect(() => {
+    if (!sessionStorage.token) {
+      window.location.href = `/?returnUrl=${encodeURIComponent(window.location.href)}`;
+    }
+  }, []);
 
   return (
     <div className={styles.box}>
@@ -33,7 +32,6 @@ export default function App({ submit }: { submit: Function }) {
             labelWidth={60}
             name="name"
             label="昵称"
-            rules={[{ required: true, message: '请输入昵称' }]}
             required={false}>
             <Field />
           </Form.Item>

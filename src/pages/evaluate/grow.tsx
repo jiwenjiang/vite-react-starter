@@ -8,7 +8,7 @@ import {
   PlayCircleO,
   StopCircleO
 } from '@react-vant/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Radio, Swiper, Tabs } from 'react-vant';
 import Baseinfo from './baseinfo';
@@ -23,11 +23,12 @@ export default function App() {
   const [isPlay, setIsPlay] = useState(false);
   const navigate = useNavigate();
   const [baseinfo, setBaseinfo] = useState(null);
+  const age = useRef(1);
 
-  const getList = async (init?: boolean) => {
+  const getList = async () => {
     const res = await request({
       url: '/scaleTable/get',
-      data: { code: 7, age: 10 },
+      data: { code: 7, birthday: age.current },
     });
     const datas = res.data.subjects?.map((v) => ({
       ...v,
@@ -47,11 +48,21 @@ export default function App() {
   };
 
   const pre = () => {
-    setQuestionIndex(questionIndex - 1);
+    if (questionIndex === 0) {
+      setActive(active - 1);
+      setQuestionIndex(data[active - 1].questions.length - 1);
+    } else {
+      setQuestionIndex(questionIndex - 1);
+    }
   };
 
   const next = () => {
-    setQuestionIndex(questionIndex + 1);
+    if (questionIndex < data[active].questions.length - 1) {
+      setQuestionIndex(questionIndex + 1);
+    } else {
+      setActive(active + 1);
+      setQuestionIndex(0);
+    }
   };
 
   const changeVal = (e, q, m) => {
@@ -157,15 +168,28 @@ export default function App() {
   };
 
   const submit = async () => {
+    const answers = [];
+    data.forEach((c) => {
+      c.questions.forEach((v) => {
+        answers.push({
+          answerSn: v.answerSn ?? 1,
+          questionSn: v.sn,
+          remark: v.remark,
+          attachments: v.attachments,
+        });
+      });
+    });
+
     const params = {
       ...(baseinfo as object),
       scaleTableCode: 7,
-      answers: data[active].questions?.map((v) => ({
-        answerSn: v.answerSn ?? 1,
-        questionSn: v.sn,
-        remark: v.remark,
-        attachments: v.attachments,
-      })),
+      answers,
+      // answers: data[active].questions?.map((v) => ({
+      //   answerSn: v.answerSn ?? 1,
+      //   questionSn: v.sn,
+      //   remark: v.remark,
+      //   attachments: v.attachments,
+      // })),
     };
     const res = await request({
       url: '/scaleRecord/save',
@@ -178,6 +202,7 @@ export default function App() {
   };
 
   const baseSubmit = (params) => {
+    age.current = params.birthday;
     setBaseinfo(params);
   };
 
@@ -274,34 +299,39 @@ export default function App() {
                     </Form>
                   </div>
                 </div>
+                <div className={styles.btnbox}>
+                  {active === data.length - 1 &&
+                  questionIndex === data[active]?.questions?.length - 1 ? (
+                    <>
+                      <Button
+                        className={styles.btn}
+                        onClick={submit}
+                        type="primary"
+                        block>
+                        提交答案
+                      </Button>
+                      {data[active]?.questions?.length > 1 && (
+                        <Button className={styles.btn} block onClick={pre}>
+                          上一题
+                        </Button>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <Button className={styles.btn} type="primary" block onClick={next}>
+                        下一题
+                      </Button>
+                      {(active !== 0 || questionIndex !== 0) && (
+                        <Button className={styles.btn} block onClick={pre}>
+                          上一题
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </div>
               </Tabs.TabPane>
             ))}
           </Tabs>
-          <div className={styles.btnbox}>
-            {questionIndex === data[active]?.questions?.length - 1 ? (
-              <>
-                <Button className={styles.btn} onClick={submit} type="primary" block>
-                  提交答案
-                </Button>
-                {data[active]?.questions?.length > 1 && (
-                  <Button className={styles.btn} block onClick={pre}>
-                    上一题
-                  </Button>
-                )}
-              </>
-            ) : (
-              <>
-                <Button className={styles.btn} type="primary" block onClick={next}>
-                  下一题
-                </Button>
-                {questionIndex !== 0 && (
-                  <Button className={styles.btn} block onClick={pre}>
-                    上一题
-                  </Button>
-                )}
-              </>
-            )}
-          </div>
         </div>
       )}
     </>

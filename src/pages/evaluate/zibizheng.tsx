@@ -120,7 +120,7 @@ function Range({ data, content, score }) {
       {data.length > 0 && (
         <div className={styles.rangeBox}>
           <div style={{ width: widthUnit * data[0] }} className={styles.pipe}>
-            <span>正常</span>
+            <span>低风险</span>
           </div>
           <div style={{ width: widthUnit * (data[1] - data[0]) }} className={styles.pipe}>
             <span>中等风险</span>

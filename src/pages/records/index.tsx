@@ -94,7 +94,7 @@ export default function App() {
       <VList
         renderFn={(d) => Card(d, cb, toReport)}
         data={data}
-        itemSize={255}
+        itemSize={285}
         height={height}
         onLoad={onLoad}
         loadingText={loadingText}
@@ -146,9 +146,16 @@ function Card(data, cb, choose) {
     <div className={styles.cardBox}>
       <div className={styles.card}>
         <img src={data?.coverUrl} alt="" onClick={onCard} />
-        <div className={styles.title} onClick={chooseFn}>
-          <span>{data.planName}</span>
-          <span className={styles.trainingTime}>{data.trainingTime}</span>
+        <div className={styles.title}>
+          <div>
+            <div style={{ marginBottom: 10 }}>{data.planName}</div>
+            <div className={styles.trainingTime}>{data.trainingTime}</div>
+          </div>
+          <div className={styles.report} onClick={chooseFn}>
+            <span>
+              查看报告 <Icon name="arrow" className={styles.arrow} />
+            </span>
+          </div>
         </div>
       </div>
     </div>

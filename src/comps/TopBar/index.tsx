@@ -7,7 +7,7 @@ function Topbar({ title }: { title: string; showBack?: boolean }) {
 
   useEffect(() => {
     document.title = title;
-  }, []);
+  }, [title]);
 
   return null;
 }
