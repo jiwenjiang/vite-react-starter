@@ -218,6 +218,7 @@ export default function App() {
             onChange={changeTab}
             ellipsis={false}
             animated
+            swipeable={false}
             swipeThreshold={3}>
             {data.map((v, i) => (
               <Tabs.TabPane title={v.subject} name={i} key={i}>
