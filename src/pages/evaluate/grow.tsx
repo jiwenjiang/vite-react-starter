@@ -209,7 +209,7 @@ export default function App() {
   return (
     <>
       {!baseinfo ? (
-        <Baseinfo submit={baseSubmit} />
+        <Baseinfo submit={baseSubmit} code="7"/>
       ) : (
         <div className={styles.box}>
           <Topbar title="儿童发育里程碑评测" />

@@ -25,6 +25,7 @@ export default function App() {
   const navigate = useNavigate();
   const [baseinfo, setBaseinfo] = useState();
   const [title, setTitle] = useState('');
+  const [sum, setSum] = useState(0);
   const age = useRef(1);
   const [currentData, setCurrentData] = useState<
     Partial<{
@@ -47,6 +48,14 @@ export default function App() {
       questions: v.questions?.map((c) => ({ ...c, remark: '', attachments: [] })),
     }));
     setTitle(res.data.name);
+    const list = [];
+    let num = 0;
+    datas.forEach((v) => {
+      list.push(...v.questions);
+      num += v.sum;
+    });
+    datas[0].questions = list;
+    setSum(num);
     setData(datas);
     setCurrentData(datas[0].questions[0]);
   };
@@ -59,12 +68,12 @@ export default function App() {
 
   const pre = () => {
     setQuestionIndex(questionIndex - 1);
-    setCurrentData(data[0].questions[questionIndex - 1]);
+    setCurrentData(data[active].questions[questionIndex - 1]);
   };
 
   const next = () => {
     setQuestionIndex(questionIndex + 1);
-    setCurrentData(data[0].questions[questionIndex + 1]);
+    setCurrentData(data[active].questions[questionIndex + 1]);
   };
 
   const changeVal = (e, q, m) => {
@@ -205,7 +214,7 @@ export default function App() {
   return (
     <>
       {!baseinfo ? (
-        <Baseinfo submit={baseSubmit} />
+        <Baseinfo submit={baseSubmit} code={GetQueryString('code')} />
       ) : (
         <div className={styles.box}>
           <Topbar title={title} />
@@ -213,7 +222,7 @@ export default function App() {
             {/* <div className={styles.title2}>{title}</div> */}
             <div className={styles.tibox}>
               <div style={{ marginBottom: 4 }}>
-                {questionIndex + 1}/{data[0]?.sum}
+                {questionIndex + 1}/{sum}
               </div>
               <Form form={form} layout="vertical">
                 <div className={styles.title}>{currentData?.name}</div>

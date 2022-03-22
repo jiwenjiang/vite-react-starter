@@ -3,12 +3,30 @@ import Topbar from '@/comps/TopBar';
 import { GenderType } from '@/service/const';
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import { Button, Field, Form, Radio } from 'react-vant';
+import { Button, Dialog, Field, Form, Radio } from 'react-vant';
 import styles from './baseinfo.module.less';
 
-export default function App({ submit }: { submit: Function }) {
+export default function App({ submit, code }: { submit: Function; code: string }) {
   const [form] = Form.useForm();
   const onFinish = async (values) => {
+    if (code === '7') {
+      const m = moment().diff(moment(values.birthday), 'month');
+      if (m < 2) {
+        Dialog.alert({
+          message: '本量表只适用于2个月以上儿童',
+        });
+        return;
+      }
+    }
+    if (code === '6') {
+      const m = moment().diff(moment(values.birthday), 'year');
+      if (m < 3) {
+        Dialog.alert({
+          message: '本量表只适用于3岁以上儿童',
+        });
+        return;
+      }
+    }
     const params = { ...values, birthday: moment(values.birthday).format('X') };
     submit(params);
   };
@@ -28,11 +46,7 @@ export default function App({ submit }: { submit: Function }) {
           <div>信息准确才能匹配准确量表</div>
         </div>
         <Form onFinish={onFinish} form={form}>
-          <Form.Item
-            labelWidth={60}
-            name="name"
-            label="昵称"
-            required={false}>
+          <Form.Item labelWidth={60} name="name" label="昵称" required={false}>
             <Field />
           </Form.Item>
           <Form.Item
