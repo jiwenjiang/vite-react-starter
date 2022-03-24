@@ -19,6 +19,7 @@
   box-shadow: 2px 2px 4px 0px rgba(24, 24, 24, 0.05);
   border: 1px solid #f0f0f0;
   padding: 15px;
+  padding-top: 8px;
   font-size: 13px;
   border-radius: 8px;
   .title {
@@ -30,6 +31,10 @@
     align-items: center;
     border-bottom: 1px solid #efefef;
     margin-bottom: 15px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
   }
   .kv {
     display: flex;
@@ -51,4 +56,34 @@
   color: var(--primary-color);
   text-decoration: underline;
   margin-top: 23px;
+}
+
+.listCard {
+  box-shadow: 2px 2px 4px 0px rgba(24, 24, 24, 0.05);
+  padding: 8px 15px;
+  margin-top: 8px;
+}
+
+.listBox {
+  height: 44px;
+  border-bottom: 1px solid #f0f0f0;
+  line-height: 44px;
+  position: relative;
+
+  .listTitle {
+    font-size: 13px;
+    color: #181818;
+    margin-bottom: 4px;
+  }
+  .listDesc {
+    font-size: 13px;
+    color: #7f7f7f;
+  }
+  .arrow {
+    position: absolute;
+    right: 0;
+    top: 15px;
+    color: #7f7f7f;
+    font-size: 20px;
+  }
 }
