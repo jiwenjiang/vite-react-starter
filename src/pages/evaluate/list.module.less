@@ -1,0 +1,118 @@
+.box {
+  height: 100vh;
+  background-color: #f9fbfc;
+}
+
+.cardBox {
+  height: 158px;
+  background-color: transparent;
+  padding: 8px;
+  padding-bottom: 0;
+  .kv {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .k {
+    color: #7f7f7f;
+  }
+  .v {
+    color: #181818;
+  }
+}
+.card {
+  background-color: #fff;
+  height: 158px;
+  background: #ffffff;
+  box-shadow: 2px 2px 4px 0px rgba(24, 24, 24, 0.05);
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  padding: 15px;
+  font-size: 13px;
+  .scaleName {
+    font-size: 13px;
+    font-weight: bold;
+    color: #181818;
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+  img {
+    border-radius: 15px;
+    border: 1px solid #f0f0f0;
+    width: 100%;
+    height: 193px;
+  }
+  .title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #181818;
+    line-height: 19px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  .report {
+    text-decoration: underline;
+    color: var(--primary-color);
+    .arrow {
+      color: #7f7f7f;
+    }
+  }
+
+  .trainingTime {
+    font-size: 13px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #7f7f7f;
+  }
+}
+.popBox {
+  padding: 8px;
+  padding-bottom: 0;
+  background-color: #f9fbfc;
+}
+.innerBox {
+  background: #ffffff;
+  box-shadow: 2px 2px 4px 0px rgba(24, 24, 24, 0.05);
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  height: 292px;
+  overflow-y: auto;
+  padding: 0 15px;
+}
+.listBox {
+  height: 54px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-top: 8px;
+  position: relative;
+  .listTitle {
+    font-size: 13px;
+    color: #181818;
+    margin-bottom: 4px;
+  }
+  .listDesc {
+    font-size: 13px;
+    color: #7f7f7f;
+  }
+  .arrow {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    color: #7f7f7f;
+  }
+}
+.btnbox {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  border-top: 1px solid #f0f0f0;
+  .btn {
+    flex: 1;
+    text-align: center;
+    color: var(--primary-color);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
