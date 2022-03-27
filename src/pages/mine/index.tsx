@@ -1,9 +1,10 @@
 import FTabbar from '@/comps/Tabbar';
 import Topbar from '@/comps/TopBar';
+import request from '@/service/request';
 import yonghuImg from '@/static/imgs/yonghu.jpg';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Icon } from 'react-vant';
+import { Dialog, Icon } from 'react-vant';
 import styles from './index.module.less';
 
 export default function App() {
@@ -33,12 +34,20 @@ function Card() {
     }
   }, []);
 
-  const toPsw = () => {
-    navigate('/password');
-  };
-
   const nav = (v) => {
     navigate(v.url);
+  };
+
+  const unbind = () => {
+    Dialog.confirm({
+      title: '微信解绑',
+      message: '是否确认解绑微信',
+      onConfirm: () => {
+        request({ url: '/unbind' }).then(() => {
+          navigate('/login');
+        });
+      },
+    });
   };
 
   return (
@@ -91,7 +100,7 @@ function Card() {
         ))}
       </div>
       <div className={styles.listCard}>
-        <div className={styles.listBox} style={{ borderBottom: 'none' }}>
+        <div className={styles.listBox} style={{ borderBottom: 'none' }} onClick={unbind}>
           <div className={styles.listTitle}>解绑微信</div>
           <Icon name="arrow" className={styles.arrow} />
         </div>

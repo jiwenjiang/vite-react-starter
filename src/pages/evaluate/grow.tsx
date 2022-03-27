@@ -306,7 +306,12 @@ export default function App() {
                               src={v.localData}
                             />
                           ) : v.type === MediaType.VIDEO ? (
-                            <PlayCircle onClick={() => playVideo(v.localData)} key={i} />
+                            <div
+                              className={styles.iconBox}
+                              key={i}
+                              onClick={() => playVideo(v.localData)}>
+                              <PlayCircle />
+                            </div>
                           ) : (
                             <div className={styles.iconBox} key={i}>
                               {isPlay ? (
