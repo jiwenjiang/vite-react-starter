@@ -1,3 +1,4 @@
+import Recorder from '@/comps/Recorder';
 import Topbar from '@/comps/TopBar';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
@@ -5,14 +6,17 @@ import {
   Audio,
   PauseCircleO,
   Photograph,
+  PlayCircle,
   PlayCircleO,
-  StopCircleO
+  StopCircleO,
+  Video,
 } from '@react-vant/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Field, Form, Radio, Swiper, Tabs } from 'react-vant';
+import { Button, Field, Form, Popup, Radio, Swiper, Tabs } from 'react-vant';
 import Baseinfo from './baseinfo';
 import styles from './grow.module.less';
+import VideoComp from '@/comps/Video';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -21,9 +25,12 @@ export default function App() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [isRecord, setIsRecord] = useState(false);
   const [isPlay, setIsPlay] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
   const navigate = useNavigate();
   const [baseinfo, setBaseinfo] = useState(null);
   const age = useRef(1);
+  const [showVideo, setShowVideo] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState(false);
 
   const getList = async () => {
     const res = await request({
@@ -32,7 +39,12 @@ export default function App() {
     });
     const datas = res.data.subjects?.map((v) => ({
       ...v,
-      questions: v.questions?.map((c) => ({ ...c, remark: '', attachments: [] })),
+      questions: v.questions?.map((c) => ({
+        ...c,
+        remark: '',
+        attachments: [],
+        mediaList: [],
+      })),
     }));
     setData(datas);
   };
@@ -206,10 +218,29 @@ export default function App() {
     setBaseinfo(params);
   };
 
+  const upload = (params, file) => {
+    console.log('🚀 ~ file: grow.tsx ~ line 222 ~ upload ~ file', file);
+    data[active].questions[questionIndex].mediaList.push({
+      type: MediaType.VIDEO,
+      localData: file,
+    });
+    data[active].questions[questionIndex].attachments.push({
+      type: MediaType.VIDEO,
+      ...params,
+    });
+    setData([...data]);
+  };
+
+  const playVideo = (v) => {
+    console.log('🚀 ~ file: grow.tsx ~ line 234 ~ playVideo ~ v', v);
+    setCurrentVideo(v);
+    setShowVideo(true);
+  };
+
   return (
     <>
       {!baseinfo ? (
-        <Baseinfo submit={baseSubmit} code="7"/>
+        <Baseinfo submit={baseSubmit} code="7" />
       ) : (
         <div className={styles.box}>
           <Topbar title="儿童发育里程碑评测" />
@@ -274,6 +305,8 @@ export default function App() {
                               key={i}
                               src={v.localData}
                             />
+                          ) : v.type === MediaType.VIDEO ? (
+                            <PlayCircle onClick={() => playVideo(v.localData)} key={i} />
                           ) : (
                             <div className={styles.iconBox} key={i}>
                               {isPlay ? (
@@ -288,6 +321,13 @@ export default function App() {
                           className={styles.iconBox}
                           onClick={() => chooseImg(MediaType.PICTURE)}>
                           <Photograph />
+                        </div>
+                        <div
+                          className={styles.iconBox}
+                          onClick={() => {
+                            setOpenVideo(true);
+                          }}>
+                          <Video />
                         </div>
                         <div
                           className={styles.iconBox}
@@ -335,6 +375,18 @@ export default function App() {
           </Tabs>
         </div>
       )}
+      <Popup
+        visible={showVideo}
+        destroyOnClose={true}
+        onClose={() => setShowVideo(false)}>
+        <VideoComp
+          sources={[
+            {
+              src: currentVideo,
+            },
+          ]}></VideoComp>
+      </Popup>
+      {openVideo && <Recorder close={() => setOpenVideo(false)} uploadCb={upload} />}
     </>
   );
 }
