@@ -25,6 +25,7 @@ function Recorder({ close, uploadCb }) {
   }
 
   function onMediaSuccess(stream) {
+    console.log("success~~~~~~~")
     const video = document.createElement('video');
     video.setAttribute('width', `${width}`);
     video.setAttribute('height', `${height - 100}`);
@@ -69,7 +70,7 @@ function Recorder({ close, uploadCb }) {
     if (status !== 'start') {
       captureUserMedia(
         {
-          audio: true, // record both audio/video in Firefox/Chrome
+          audio: false, // record both audio/video in Firefox/Chrome
           video: true,
         },
         onMediaSuccess,
