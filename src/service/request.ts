@@ -1,6 +1,6 @@
 import { Notify } from 'react-vant';
 
-const baseUrl = `https://platform-test.fushuhealth.com/recovery-wx`;
+const baseUrl = `https://wx-test.fushuhealth.com/recovery-wx`;
 
 type httpType = {
   url: string;
