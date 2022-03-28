@@ -59,7 +59,7 @@ function Recorder({ close, uploadCb }) {
     };
 
     // get blob after specific time interval
-    mediaRecorder.current.start();
+    mediaRecorder.current.start(5000);
   }
 
   function onMediaError(e) {
