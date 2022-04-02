@@ -57,6 +57,8 @@ export default function App() {
       params.current.patientId = user.id;
       getList(true);
       getMarkList();
+    }else{
+      getMarkList();
     }
   }, []);
 

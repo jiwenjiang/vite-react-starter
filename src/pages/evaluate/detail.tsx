@@ -1,9 +1,11 @@
 import Topbar from '@/comps/TopBar';
+import Video from '@/comps/Video';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
-import { PauseCircleO, PlayCircleO } from '@react-vant/icons';
+import { PauseCircleO, PlayCircle, PlayCircleO } from '@react-vant/icons';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Popup } from 'react-vant';
 import styles from './growDetail.module.less';
 
 export default function App() {
@@ -20,6 +22,8 @@ function Card() {
   const params = useParams();
   const [isPlay, setIsPlay] = useState(false);
   const [audioSrc, setAudioSrc] = useState();
+  const [showVideo, setShowVideo] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -43,6 +47,12 @@ function Card() {
     setIsPlay(false);
   };
 
+  const playVideo = (v) => {
+    console.log('🚀 ~ file: grow.tsx ~ line 234 ~ playVideo ~ v', v);
+    setCurrentVideo(v);
+    setShowVideo(true);
+  };
+
   return (
     <>
       <div className={styles.cardBox}></div>
@@ -60,12 +70,19 @@ function Card() {
                   <Fragment key={i}>
                     {m.type === MediaType.PICTURE ? (
                       <img className={styles.imgs} alt="pic" key={i} src={m.url} />
+                    ) : m.type === MediaType.VIDEO ? (
+                      <div
+                        className={styles.iconBox}
+                        key={i}
+                        onClick={() => playVideo(m.url)}>
+                        <PlayCircle />
+                      </div>
                     ) : (
                       <div className={styles.iconBox} key={i}>
                         {isPlay ? (
                           <PauseCircleO onClick={() => stopVoice()} />
                         ) : (
-                          <PlayCircleO onClick={() => startVoice(v.localData)} />
+                          <PlayCircleO onClick={() => startVoice(m.url)} />
                         )}
                       </div>
                     )}
@@ -76,6 +93,17 @@ function Card() {
           </div>
         </div>
       ))}
+      <Popup
+        visible={showVideo}
+        destroyOnClose={true}
+        onClose={() => setShowVideo(false)}>
+        <Video
+          sources={[
+            {
+              src: currentVideo,
+            },
+          ]}></Video>
+      </Popup>
       {/* {audioSrc && <audio src={audioSrc}></audio>} */}
     </>
   );

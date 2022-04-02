@@ -22,7 +22,9 @@
     "react-router-dom": "^6.2.1",
     "react-tiny-virtual-list": "^2.2.0",
     "react-vant": "^1.4.12",
+    "react-video-recorder": "^3.19.1",
     "reactutils": "^5.10.0",
+    "styled-components": "^5.3.5",
     "swr": "^1.1.2",
     "video.js": "^7.17.0"
   },
