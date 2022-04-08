@@ -4,7 +4,7 @@ import styles from './index.module.less';
 import MediaStreamRecorder from 'msr';
 import request from '@/service/request';
 import * as qiniu from 'qiniu-js';
-import VideoRecorder from 'react-video-recorder'
+import VideoRecorder from '@jbleach/react-video-recorder';
 
 function mergeProps(mergein, mergeto) {
   for (var t in mergeto) {
@@ -25,6 +25,7 @@ function Recorder({ close, uploadCb }) {
   const buffers = useRef([]);
   const buffersFilled = useRef(0);
   const allowRecord = useRef(false);
+  const videoFile = useRef();
 
   useEffect(() => {
     setWidth(document.body.clientWidth);
@@ -197,14 +198,18 @@ function Recorder({ close, uploadCb }) {
         // ...
       },
       complete(res) {
-        console.log("🚀 ~ file: index.tsx ~ line 200 ~ complete ~ res", res)
+        console.log('🚀 ~ file: index.tsx ~ line 200 ~ complete ~ res', res);
         // ...
       },
     };
     const observable = qiniu.upload(file, `${bucket}/${key}`, token, putExtra, config);
-    observable.subscribe(observer); 
+    observable.subscribe(observer);
     uploadCb({ key, bucket, size: file.size ?? 1 }, URL.createObjectURL(blob));
     close();
+  };
+
+  const confirmFile = () => {
+    upload2Server(videoFile.current);
   };
 
   return (
@@ -214,10 +219,11 @@ function Recorder({ close, uploadCb }) {
       className={styles.recorder}>
       <VideoRecorder
         onRecordingComplete={(videoBlob) => {
-          // Do something with the video...
-          upload2Server(videoBlob)
+          // upload2Server(videoBlob)
           console.log('videoBlob', videoBlob);
+          videoFile.current = videoBlob;
         }}
+        onConfirm={() => confirmFile()}
       />
       {/* <video muted={true} controls={false} width={width} height={height}></video> */}
       {/* <div className={styles.btn}>

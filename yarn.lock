@@ -432,6 +432,14 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
+"@jbleach/react-video-recorder@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@jbleach/react-video-recorder/-/react-video-recorder-0.0.3.tgz#19c6dd15ae100a6310c7d8f9b54bf88b19ae80ec"
+  integrity sha512-AvX5S6tdvS0+J0UfcCjPkICG3K4gQssGClwWm8AoNZ0+qoGX9XXJE66G3I4FoU4QtaYgqwtswb6ZGgc55CWd2Q==
+  dependencies:
+    fix-webm-duration "^1.0.4"
+    react-svg-inline "^2.1.0"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -1657,6 +1665,11 @@ find-up@^5.0.0:
   dependencies:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
+
+fix-webm-duration@^1.0.4:
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/fix-webm-duration/-/fix-webm-duration-1.0.5.tgz#da4558a92196a677302bfc54780b494dd5336a96"
+  integrity sha512-b6oula3OfSknx0aWoLsxvp4DVIYbwsf+UAkr6EDAK3iuMYk/OSNKzmeSI61GXK0MmFTEuzle19BPvTxMIKjkZg==
 
 flat-cache@^3.0.4:
   version "3.0.4"

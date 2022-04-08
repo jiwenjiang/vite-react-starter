@@ -11,6 +11,7 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@jbleach/react-video-recorder": "^0.0.3",
     "@react-vant/icons": "^0.0.6",
     "@vitejs/plugin-legacy": "^1.7.1",
     "echarts": "^5.3.1",

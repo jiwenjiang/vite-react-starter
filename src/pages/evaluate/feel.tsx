@@ -52,7 +52,12 @@ export default function App() {
     });
     const datas = res.data.subjects?.map((v) => ({
       ...v,
-      questions: v.questions?.map((c) => ({ ...c, remark: '', attachments: [] })),
+      questions: v.questions?.map((c) => ({
+        ...c,
+        remark: '',
+        attachments: [],
+        mediaList: [],
+      })),
     }));
     setTitle(res.data.name);
     const list = [];
