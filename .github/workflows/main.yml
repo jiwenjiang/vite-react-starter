@@ -15,11 +15,11 @@ jobs:
         # 使用action库  actions/checkout获取源码
         uses: actions/checkout@v1
       # 安装Node13
-      - name: use Node.js 15
+      - name: use Node.js 16
         # 使用action库  actions/setup-node安装node
         uses: actions/setup-node@v1
         with:
-          node-version: 15
+          node-version: 16
       # 安装依赖
       - name: install and build
         run: |
