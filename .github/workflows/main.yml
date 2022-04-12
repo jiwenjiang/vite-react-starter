@@ -15,21 +15,17 @@ jobs:
         # 使用action库  actions/checkout获取源码
         uses: actions/checkout@v1
       # 安装Node13
-      - name: use Node.js 16
+      - name: use Node.js
         # 使用action库  actions/setup-node安装node
         uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: 16.14.2
       # 安装依赖
       - name: install and build
         run: |
-        npm install yarn -g
-        yarn
-        yarn build
-      # # 打包
-      # - name: npm build
-      #   run: yarn build
-      # 部署到阿里云
+          npm install yarn -g
+          yarn
+          yarn build
       - name: ssh deploy
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
