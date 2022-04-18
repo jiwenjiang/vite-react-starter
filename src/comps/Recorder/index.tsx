@@ -173,13 +173,10 @@ function Recorder({ close, uploadCb }) {
   };
 
   const upload2Server = async (blob) => {
-    const file = new File(
-      [blob],
-      'msr-' + new Date().toISOString().replace(/:|\./g, '-') + '.webm',
-      {
-        type: 'video/webm',
-      },
-    );
+    const fileName = 'msr-' + new Date().toISOString().replace(/:|\./g, '-') + '.webm';
+    const file = new File([blob], fileName, {
+      type: 'video/webm',
+    });
     const param = { ext: 'webm', type: 2 };
     const { data } = await request({ url: '/upload/token', data: param });
     const { key, token, bucket } = data;
@@ -197,14 +194,26 @@ function Recorder({ close, uploadCb }) {
       error(err) {
         // ...
       },
-      complete(res) {
+      complete: async (res) => {
         console.log('🚀 ~ file: index.tsx ~ line 200 ~ complete ~ res', res);
+        const { data } = await request({
+          url: '/upload/file',
+          data: {
+            bucket,
+            fileName,
+            key,
+            size: file.size ?? 1,
+            type: 2,
+          },
+          method: 'POST',
+        });
+        console.log('🚀 ~ file: index.tsx ~ line 200 ~ complete: ~ data', data);
+        uploadCb({ serverId: data.id }, data.url);
         // ...
       },
     };
     const observable = qiniu.upload(file, `${bucket}/${key}`, token, putExtra, config);
     observable.subscribe(observer);
-    uploadCb({ key, bucket, size: file.size ?? 1 }, URL.createObjectURL(blob));
     close();
   };
 
