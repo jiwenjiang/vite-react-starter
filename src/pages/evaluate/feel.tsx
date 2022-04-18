@@ -353,7 +353,6 @@ export default function App() {
           sources={[
             {
               src: currentVideo,
-              type: 'video/webm',
             },
           ]}></VideoComp>
       </Popup>
