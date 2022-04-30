@@ -65,7 +65,7 @@ function App() {
     if (!code) {
       window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf642fb7b35c55f30&redirect_uri=${
         window.location.href
-      }&response_type=code&scope=snsapi_base&state=${
+      }&response_type=code&scope=snsapi_userinfo&state=${
         returnUrl || ''
       }&connect_redirect=1#wechat_redirect`;
       // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf642fb7b35c55f30&redirect_uri=http%3A%2F%2Fwx-test.fushuhealth.com%2F&response_type=code&scope=snsapi_base&state=${

@@ -1,5 +1,4 @@
 import { DatetimePickerItem } from '@/comps/CombinedItems.tsx';
-import Recorder from '@/comps/Recorder';
 import Topbar from '@/comps/TopBar';
 import { GenderType } from '@/service/const';
 import moment from 'moment';

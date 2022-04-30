@@ -224,7 +224,6 @@ export default function App() {
   };
 
   const upload = (params, file) => {
-    console.log('🚀 ~ file: grow.tsx ~ line 222 ~ upload ~ file', file);
     data[active].questions[questionIndex].mediaList.push({
       type: MediaType.VIDEO,
       localData: file,
