@@ -195,7 +195,6 @@ function Recorder({ close, uploadCb }) {
         // ...
       },
       complete: async (res) => {
-        console.log('🚀 ~ file: index.tsx ~ line 200 ~ complete ~ res', res);
         const { data } = await request({
           url: '/upload/file',
           data: {
@@ -207,7 +206,6 @@ function Recorder({ close, uploadCb }) {
           },
           method: 'POST',
         });
-        console.log('🚀 ~ file: index.tsx ~ line 200 ~ complete: ~ data', data);
         uploadCb({ serverId: data.id }, data.url);
         // ...
       },
