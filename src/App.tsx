@@ -6,7 +6,8 @@ import request from './service/request';
 const Course = lazy(() => import('./pages/course'));
 const Login = lazy(() => import('./pages/login'));
 const Detail = lazy(() => import('./pages/detail'));
-const Mine = lazy(() => import('./pages/mine'));
+const Mine = lazy(() => import('./pages/user/mine'));
+const Bind = lazy(() => import('./pages/user/bind'));
 const Password = lazy(() => import('./pages/password'));
 const Records = lazy(() => import('./pages/records'));
 const Report = lazy(() => import('./pages/report'));
@@ -83,6 +84,7 @@ function App() {
           <Route path="report/:id" element={<Report />} />
           <Route path="courseDetail/:id" element={<Detail />} />
           <Route path="mine" element={<Mine />} />
+          <Route path="bind" element={<Bind />} />
           <Route path="evaluate">
             <Route path="grow" element={<Grow />} />
             <Route path="growDetail/:id" element={<GrowDetail />} />
