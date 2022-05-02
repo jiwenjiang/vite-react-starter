@@ -25,7 +25,7 @@ export default React.forwardRef(function FushuVideo(props: any, ref) {
       controls: true,
       ...props,
     });
-    console.log("🚀 ~ file: index.tsx ~ line 19 ~ useEffect ~ props", props)
+    console.log('🚀 ~ file: index.tsx ~ line 19 ~ useEffect ~ props', props);
     return () => {
       // player.current.pause();
       console.log('destroy', player.current);

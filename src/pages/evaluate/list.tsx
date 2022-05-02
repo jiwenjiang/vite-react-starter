@@ -59,7 +59,7 @@ export default function App() {
   const toDetail = async (v) => {
     navigate(`/evaluate/detail/${v.id}`);
   };
-  
+
   return (
     <div className={styles.box}>
       <Topbar title="自测量表记录" />

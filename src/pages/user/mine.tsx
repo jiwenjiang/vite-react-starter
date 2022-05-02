@@ -5,7 +5,7 @@ import yonghuImg from '@/static/imgs/yonghu.jpg';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Dialog, Icon } from 'react-vant';
-import styles from './index.module.less';
+import styles from './mine.module.less';
 
 export default function App() {
   return (
