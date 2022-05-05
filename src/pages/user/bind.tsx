@@ -2,7 +2,7 @@ import request from '@/service/request';
 import { GetQueryString } from '@/service/utils';
 import logo from '@/static/imgs/logo.png';
 import { PhoneO } from '@react-vant/icons';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -10,10 +10,8 @@ import {
   Field,
   Form,
   hooks,
-  Icon,
   Notify,
-  NumberKeyboard,
-  Toast,
+  NumberKeyboard
 } from 'react-vant';
 import styles from './bind.module.less';
 
@@ -29,30 +27,44 @@ function App() {
   const onFinish = async (values) => {
     console.log('🚀 ~ file: bind.tsx ~ line 29 ~ onFinish ~ values', values);
     if (!/\d{6}/.test(state.value)) {
-      Notify({ type: 'danger', message: '请输入6位校验码' });
+      Notify.show({ type: 'danger', message: '请输入6位校验码' });
+      return;
     }
-    // const returnUrl = GetQueryString('returnUrl');
-    // const msg = await request({
-    //   url: '/login',
-    //   data: { ...values, openId: GetQueryString('openId') },
-    //   method: 'POST',
-    //   needLogin: false,
-    // });
-    // if (msg.success) {
-    //   sessionStorage.user = JSON.stringify(msg.data.user);
-    //   sessionStorage.token = msg.data.token;
-    //   if (returnUrl) {
-    //     window.location.href = returnUrl;
-    //   } else {
-    //     navigate('/records');
-    //   }
-    // }
+    const returnUrl = GetQueryString('returnUrl');
+    const msg = await request({
+      url: '/login',
+      data: { ...values, openId: GetQueryString('openId'), code: state.value },
+      method: 'POST',
+      needLogin: false,
+    });
+    if (msg.success) {
+      sessionStorage.user = JSON.stringify(msg.data.user);
+      sessionStorage.token = msg.data.token;
+      if (returnUrl) {
+        window.location.href = returnUrl;
+      } else {
+        navigate('/records');
+      }
+    }
   };
 
-  const send = () => {
-    set({
-      isSend: true,
-    });
+  const send = async () => {
+    const phone = form.getFieldValue('phone');
+    console.log('🚀 ~ file: bind.tsx ~ line 56 ~ send ~ phone', phone);
+    if (/1\d{10}/.test(phone)) {
+      request({
+        url: '/sms',
+        data: {
+          phone: phone,
+        },
+        needLogin: false,
+      });
+      set({
+        isSend: true,
+      });
+    } else {
+      Notify.show({ type: 'danger', message: '请输入正确手机号' });
+    }
   };
 
   return (
@@ -104,7 +116,7 @@ function App() {
                 className={styles.checkBtn}
                 type="primary"
                 block
-                onClick={send}>
+                onClick={() => send()}>
                 发送验证码
               </Button>
             )}
@@ -121,7 +133,7 @@ function App() {
             }}
           />
           <Button nativeType="submit" className={styles.btn} type="primary" block>
-            登录
+            绑定
           </Button>
         </Form>
         <div className={styles.rights}>

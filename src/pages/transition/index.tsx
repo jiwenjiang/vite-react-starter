@@ -54,7 +54,7 @@ function App() {
         }
       }
       if (checkId.code === 2) {
-        navigate(`/login?openId=${res.data?.openId}&returnUrl=${returnUrl}`);
+        navigate(`/bind?openId=${res.data?.openId}&returnUrl=${returnUrl}`);
       }
     }
   };
