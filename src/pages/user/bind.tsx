@@ -2,17 +2,9 @@ import request from '@/service/request';
 import { GetQueryString } from '@/service/utils';
 import logo from '@/static/imgs/logo.png';
 import { PhoneO } from '@react-vant/icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Button,
-  CountDown,
-  Field,
-  Form,
-  hooks,
-  Notify,
-  NumberKeyboard
-} from 'react-vant';
+import { Button, CountDown, Field, Form, hooks, Notify } from 'react-vant';
 import styles from './bind.module.less';
 
 function App() {
@@ -22,6 +14,7 @@ function App() {
     value: '',
     isSend: false,
   });
+  const [showRight, setShowRight] = useState(true);
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
@@ -50,7 +43,6 @@ function App() {
 
   const send = async () => {
     const phone = form.getFieldValue('phone');
-    console.log('🚀 ~ file: bind.tsx ~ line 56 ~ send ~ phone', phone);
     if (/1\d{10}/.test(phone)) {
       request({
         url: '/sms',
@@ -66,6 +58,21 @@ function App() {
       Notify.show({ type: 'danger', message: '请输入正确手机号' });
     }
   };
+
+  useEffect(() => {
+    const hide = () => {
+      setShowRight(false);
+    };
+    const show = () => {
+      setShowRight(true);
+    };
+    window.addEventListener('focus', hide);
+    window.addEventListener('blur', show, { capture: true });
+    return () => {
+      window.removeEventListener('focus', hide);
+      window.removeEventListener('blur', show);
+    };
+  }, []);
 
   return (
     <div className={styles.box}>
@@ -93,9 +100,10 @@ function App() {
             <Field
               placeholder="请输入验证码"
               value={state.value}
-              readonly
-              onClick={() => set({ visible: true })}
               className={styles.checkCode}
+              onChange={(e) => {
+                set({ value: e });
+              }}
             />
             {state.isSend ? (
               <Button
@@ -121,7 +129,7 @@ function App() {
               </Button>
             )}
           </div>
-          <NumberKeyboard
+          {/* <NumberKeyboard
             value={state.value}
             visible={state.visible}
             maxlength={6}
@@ -131,14 +139,16 @@ function App() {
             onBlur={() => {
               set({ visible: false });
             }}
-          />
+          /> */}
           <Button nativeType="submit" className={styles.btn} type="primary" block>
             绑定
           </Button>
         </Form>
-        <div className={styles.rights}>
-          Copyright © {new Date().getFullYear()} 复数健康
-        </div>
+        {showRight && (
+          <div className={styles.rights}>
+            Copyright © {new Date().getFullYear()} 复数健康
+          </div>
+        )}
       </div>
     </div>
   );
