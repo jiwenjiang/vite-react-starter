@@ -66,7 +66,7 @@ function App() {
     const show = () => {
       setShowRight(true);
     };
-    window.addEventListener('focus', hide);
+    window.addEventListener('focus', hide, { capture: true });
     window.addEventListener('blur', show, { capture: true });
     return () => {
       window.removeEventListener('focus', hide);
