@@ -1,5 +1,6 @@
 import Recorder from '@/comps/Recorder';
 import Topbar from '@/comps/TopBar';
+import VideoComp from '@/comps/Video';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
 import {
@@ -9,14 +10,13 @@ import {
   PlayCircle,
   PlayCircleO,
   StopCircleO,
-  Video,
+  Video
 } from '@react-vant/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Field, Form, Popup, Radio, Swiper, Tabs } from 'react-vant';
+import { Button, Field, Form, Notify, Popup, Radio, Swiper } from 'react-vant';
 import Baseinfo from './baseinfo';
 import styles from './grow.module.less';
-import VideoComp from '@/comps/Video';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -55,10 +55,6 @@ export default function App() {
     }
   }, [baseinfo]);
 
-  const changeTab = (v) => {
-    setActive(v);
-  };
-
   const pre = () => {
     if (questionIndex === 0) {
       setActive(active - 1);
@@ -69,6 +65,10 @@ export default function App() {
   };
 
   const next = () => {
+    if (data[active].questions[questionIndex]?.attachments?.length === 0) {
+      Notify.show({ type: 'warning', message: '请至少上传一个视频或图片' });
+      return;
+    }
     if (questionIndex < data[active].questions.length - 1) {
       setQuestionIndex(questionIndex + 1);
     } else {
@@ -180,6 +180,10 @@ export default function App() {
   };
 
   const submit = async () => {
+    if (data[active].questions[questionIndex]?.attachments?.length === 0) {
+      Notify.show({ type: 'warning', message: '请至少上传一个视频或图片' });
+      return;
+    }
     const answers = [];
     data.forEach((c) => {
       c.questions.forEach((v) => {
@@ -240,7 +244,7 @@ export default function App() {
   return (
     <>
       {!baseinfo ? (
-        <Baseinfo submit={baseSubmit} code="7" />
+        <Baseinfo submit={baseSubmit} code="9" />
       ) : (
         <div className={styles.box}>
           <Topbar title="脑瘫量表" />

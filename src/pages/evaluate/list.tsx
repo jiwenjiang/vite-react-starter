@@ -54,6 +54,10 @@ export default function App() {
       navigate(`/evaluate/growDetail/${v.id}`);
       return;
     }
+    if ([9].includes(v.scaleTableCode)) {
+      navigate(`/evaluate/brainDetail/${v.id}`);
+      return;
+    }
   };
 
   const toDetail = async (v) => {
