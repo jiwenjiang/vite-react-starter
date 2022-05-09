@@ -5,7 +5,6 @@ import pingceImg from '@/static/imgs/pingce.png';
 import yonghuImg from '@/static/imgs/yonghu.jpg';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Tag } from 'react-vant';
 import styles from './zibizheng.module.less';
 
 const colorMap = {
@@ -25,7 +24,7 @@ const checkColor = (v) => {
 export default function App() {
   return (
     <div className={styles.box}>
-      <Topbar title="感统量表测评结果" />
+      <Topbar title="脑瘫量表测评结果" />
       <Card />
     </div>
   );
@@ -77,9 +76,9 @@ function Card() {
             &nbsp; 测评结果
           </div>
           <div className={styles.scoreBox}>
-            <div className={styles.text}>您本次评测的得分</div>
+            <div className={styles.text}>您本次评测结果风险系数</div>
             <div className={styles.score} style={{ color: checkColor(data.content) }}>
-              {data.score}
+              {data.score}%
             </div>
             {/* <div>
               <Tag size="medium" type="primary" color={checkColor(data.content)}>
@@ -98,7 +97,19 @@ function Card() {
           {/* <div className={styles.scoreBox}>
             <Range data={range} content={data.content} score={data.totalScore} />
           </div> */}
-          <div className={styles.remark}>{data.remark}</div>
+          <div className={styles.remark}>
+            <div>
+              蕾波婴幼儿脑瘫危险程度百分数表自测结果风险系数越高，则患童脑损伤的可能性越大。测评结果不代表诊断结果，建议您联系客服预约蕾波专业评估，进一步精准评定！
+            </div>
+            <div className={styles.kefu}>客服咨询预约电话：400-898-6862</div>
+            <div className={styles.kefu}>附近中心预约评估：</div>
+            <div className={styles.area}>总部</div>
+            <div>北京市西城区南礼士路19号</div>
+            <div className={styles.area}>济南中心</div>
+            <div>山东省济南市槐荫区南辛庄中街69号</div>
+            <div className={styles.area}>武汉中心</div>
+            <div>湖北省武汉市洪山区卓刀泉路楚康路9附107号商铺</div>
+          </div>
         </div>
       </div>
     </>
@@ -108,7 +119,6 @@ function Card() {
 function Range({ data, content, score }) {
   const widthUnit = 320 / data[2];
   const left = (score / data[2]) * 320 - 15;
-  console.log('🚀 ~ file: zibizheng.tsx ~ line 116 ~ Range ~ widthUnit', widthUnit);
 
   return (
     <>
