@@ -67,7 +67,7 @@ function Card() {
           <div className={styles.title}>
             <img src={jieguoImg} alt="1" />
             &nbsp; 医生评估
-            <span className={styles.date}>{data.created}</span>
+            <span className={styles.date}>{data.evaluateDate}</span>
           </div>
           <div className={styles.remark}>{data.conclusion}</div>
           <div className={styles.k}>评估结果不代表诊断结果</div>
