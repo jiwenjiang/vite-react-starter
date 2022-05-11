@@ -22,6 +22,7 @@ const Elist = lazy(() => import('./pages/evaluate/list'));
 const Edetail = lazy(() => import('./pages/evaluate/detail'));
 const Brain = lazy(() => import('./pages/evaluate/brain'));
 const BrainDetail = lazy(() => import('./pages/evaluate/brainDetail'));
+const Ereport = lazy(() => import('./pages/evaluate/report'));
 
 function App() {
   const wxConfig = async () => {
@@ -96,6 +97,7 @@ function App() {
             <Route path="detail/:id" element={<Edetail />} />
             <Route path="brain" element={<Brain />} />
             <Route path="brainDetail/:id" element={<BrainDetail />} />
+            <Route path="report/:id" element={<Ereport />} />
           </Route>
         </Routes>
       </Suspense>

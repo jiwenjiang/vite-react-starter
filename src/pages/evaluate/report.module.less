@@ -1,0 +1,119 @@
+.box {
+  height: 100vh;
+  background-color: #f9fbfc;
+  :global(.rv-tabbar) {
+    border-top: 1px solid #f0f0f0;
+  }
+  :global(.rv-tabs__nav) {
+    background-color: transparent;
+  }
+}
+.cardBox {
+  background-color: transparent;
+  padding: 8px;
+}
+.card {
+  background-color: #fff;
+  background: #ffffff;
+  box-shadow: 2px 2px 4px 0px rgba(24, 24, 24, 0.05);
+  border: 1px solid #f0f0f0;
+  padding: 15px;
+  padding-top: 8px;
+  font-size: 13px;
+  border-radius: 8px;
+  .title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #181818;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 15px;
+    position: relative;
+    .date {
+      position: absolute;
+      right: 0;
+      font-weight: normal;
+      color: #7f7f7f;
+    }
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .kv {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 0 8px;
+  }
+  .kv2 {
+    display: flex;
+    margin-bottom: 15px;
+    padding: 0 8px;
+    position: relative;
+    .link {
+      color: var(--primary-color);
+      position: absolute;
+      right: 0;
+      width: 55px;
+      white-space: nowrap;
+    }
+  }
+  .k {
+    color: #7f7f7f;
+  }
+  .v {
+    color: #181818;
+  }
+  .remark {
+    color: #181818;
+    margin-bottom: 10px;
+  }
+}
+
+.table {
+  .head {
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #a7a2a2;
+    border-right: none;
+    .col1 {
+      width: 130px;
+      padding-left: 10px;
+      border-right: 1px solid #a7a2a2;
+    }
+    .col2 {
+      flex: 1;
+      text-align: center;
+      border-right: 1px solid #a7a2a2;
+    }
+  }
+  .body {
+    .li {
+      display: flex;
+      min-height: 40px;
+      line-height: 15px;
+      border: 1px solid #a7a2a2;
+      border-right: none;
+      border-top: none;
+      .col1 {
+        width: 130px;
+        padding-left: 10px;
+        border-right: 1px solid #a7a2a2;
+        display: flex;
+        align-items: center;
+      }
+      .col2 {
+        flex: 1;
+        text-align: center;
+        border-right: 1px solid #a7a2a2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
