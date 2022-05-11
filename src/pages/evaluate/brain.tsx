@@ -29,6 +29,7 @@ export default function App() {
   const navigate = useNavigate();
   const [baseinfo, setBaseinfo] = useState(null);
   const age = useRef(1);
+  const [btnText, setBtnText] = useState('提交答案');
   const [showVideo, setShowVideo] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(false);
 
@@ -44,6 +45,7 @@ export default function App() {
         remark: '',
         attachments: [],
         mediaList: [],
+        answerSn: 1,
       })),
     }));
     setData(datas);
@@ -65,7 +67,10 @@ export default function App() {
   };
 
   const next = () => {
-    if (data[active].questions[questionIndex]?.attachments?.length === 0) {
+    if (
+      data[active].questions[questionIndex]?.attachments?.length === 0 &&
+      data[active].questions[questionIndex]?.answerSn !== 1
+    ) {
       Notify.show({ type: 'warning', message: '请至少上传一个视频或图片' });
       return;
     }
@@ -207,12 +212,15 @@ export default function App() {
       //   attachments: v.attachments,
       // })),
     };
+    if (btnText === '计算中') return;
+    setBtnText('计算中');
     const res = await request({
       url: '/scaleRecord/save',
       data: params,
       method: 'POST',
     });
     if (res.success) {
+      setBtnText('提交答案');
       navigate(`/evaluate/brainDetail/${res.data.id}`);
     }
   };
@@ -357,7 +365,7 @@ export default function App() {
                 questionIndex === data[active]?.questions?.length - 1 ? (
                   <>
                     <Button className={styles.btn} onClick={submit} type="primary" block>
-                      提交答案
+                      {btnText}
                     </Button>
                     {data[active]?.questions?.length > 1 && (
                       <Button className={styles.btn} block onClick={pre}>
