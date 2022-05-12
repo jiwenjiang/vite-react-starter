@@ -185,7 +185,10 @@ export default function App() {
   };
 
   const submit = async () => {
-    if (data[active].questions[questionIndex]?.attachments?.length === 0) {
+    if (
+      data[active].questions[questionIndex]?.attachments?.length === 0 &&
+      data[active].questions[questionIndex]?.answerSn !== 1
+    ) {
       Notify.show({ type: 'warning', message: '请至少上传一个视频或图片' });
       return;
     }
@@ -262,7 +265,7 @@ export default function App() {
                 <div className={styles.subject}>{data[active]?.subject}</div>
 
                 {data[active]?.questions[questionIndex]?.carousels?.length > 0 && (
-                  <Swiper autoplay={5000}>
+                  <Swiper autoplay={false}>
                     {data[active].questions[questionIndex].carousels.map((m) => (
                       <Swiper.Item key={m}>
                         {/* {m.includes('mp4') ? (
@@ -270,7 +273,7 @@ export default function App() {
                             src={m}
                             autoPlay
                             muted
-                            style={{ width: 320, height: 240 }}></video>
+                            style={{ width: 320, height: 143 }}></video>
                         ) : ( */}
                         <div
                           className={styles.swiperBox}

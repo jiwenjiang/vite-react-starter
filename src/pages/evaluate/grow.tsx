@@ -1,5 +1,6 @@
 import Recorder from '@/comps/Recorder';
 import Topbar from '@/comps/TopBar';
+import VideoComp from '@/comps/Video';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
 import {
@@ -9,14 +10,13 @@ import {
   PlayCircle,
   PlayCircleO,
   StopCircleO,
-  Video,
+  Video
 } from '@react-vant/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Popup, Radio, Swiper, Tabs } from 'react-vant';
 import Baseinfo from './baseinfo';
 import styles from './grow.module.less';
-import VideoComp from '@/comps/Video';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -255,7 +255,7 @@ export default function App() {
               <Tabs.TabPane title={v.subject} name={i} key={i}>
                 <div className={styles.tabBox} key={i}>
                   {v.questions[questionIndex]?.carousels?.length > 0 && (
-                    <Swiper autoplay={5000}>
+                    <Swiper autoplay={false}>
                       {v.questions[questionIndex].carousels.map((m) => (
                         <Swiper.Item key={m}>
                           <div
