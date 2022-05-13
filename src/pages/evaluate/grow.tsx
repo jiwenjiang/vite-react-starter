@@ -264,7 +264,8 @@ export default function App() {
                               muted
                               loop
                               x5-playsinline
-                              webkit-playsinline="true"
+                              playsInline
+                              webkit-playsinline
                               style={{ width: 320, height: 143 }}>
                               <source src={m} type="video/mp4"></source>
                             </video>
