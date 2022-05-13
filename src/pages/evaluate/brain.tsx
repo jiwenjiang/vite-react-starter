@@ -270,10 +270,14 @@ export default function App() {
                       <Swiper.Item key={m}>
                         {m.includes('mp4') ? (
                           <video
-                            src={m}
                             autoPlay
                             muted
-                            style={{ width: 320, height: 143 }}></video>
+                            loop
+                            x5-playsinline
+                            webkit-playsinline="true"
+                            style={{ width: 320, height: 143 }}>
+                            <source src={m} type="video/mp4"></source>
+                          </video>
                         ) : (
                           <div
                             className={styles.swiperBox}
