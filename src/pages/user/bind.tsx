@@ -102,7 +102,7 @@ function App() {
               value={state.value}
               className={styles.checkCode}
               onChange={(e) => {
-                set({ value: e });
+                set({ value: e?.substring(0, 6) });
               }}
             />
             {state.isSend ? (
