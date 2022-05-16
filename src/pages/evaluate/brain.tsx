@@ -269,17 +269,23 @@ export default function App() {
                     {data[active].questions[questionIndex].carousels.map((m) => (
                       <Swiper.Item key={m}>
                         {m.includes('mp4') ? (
-                          <video
-                            autoPlay
-                            muted
-                            loop
-                            x5-playsinline
-                            playsInline
-                            webkit-playsinline
-                            style={{ width: 320, height: 143 }}>
-                            <source src={m} type="video/mp4"></source>
-                          </video>
+                          <div
+                            className={styles.swiperBox}
+                            onClick={() => playVideo(m)}
+                            style={{
+                              backgroundImage: `url(${m})`,
+                            }}></div>
                         ) : (
+                          // <video
+                          //   autoPlay
+                          //   muted
+                          //   loop
+                          //   x5-playsinline
+                          //   playsInline
+                          //   webkit-playsinline
+                          //   style={{ width: 320, height: 143 }}>
+                          //   <source src={m} type="video/mp4"></source>
+                          // </video>
                           <div
                             className={styles.swiperBox}
                             style={{
