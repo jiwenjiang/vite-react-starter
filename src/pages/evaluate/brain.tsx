@@ -256,11 +256,20 @@ export default function App() {
 
   const autoPlay = (i) => {
     if (data[active].questions[questionIndex].carousels[i]?.includes('mp4')) {
-      videojs(videoNode.current, {
-        autoplay: true,
-        controls: false,
-        sources: data[active].questions[questionIndex].carousels[i],
-      });
+      videojs(
+        videoNode.current,
+        {
+          preload: 'auto',
+          autoplay: 'muted',
+          controls: false,
+          isFullscreen: false,
+          muted: true,
+          sources: data[active].questions[questionIndex].carousels[i],
+        },
+        () => {
+          console.log('play ready');
+        },
+      );
       console.log('🚀 ~ file: grow.tsx ~ line 241 ~ autoPlay ~ i', i);
     }
   };
