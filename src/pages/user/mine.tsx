@@ -44,7 +44,7 @@ function Card() {
       message: '是否确认解绑微信',
       onConfirm: () => {
         request({ url: '/unbind' }).then(() => {
-          navigate('/login');
+          navigate('/bind');
         });
       },
     });

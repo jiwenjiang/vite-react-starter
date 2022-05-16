@@ -266,6 +266,7 @@ export default function App() {
                               x5-playsinline
                               playsInline
                               webkit-playsinline
+                              x5-video-player-type='h5-page'
                               style={{ width: 320, height: 143 }}>
                               <source src={m} type="video/mp4"></source>
                             </video>
