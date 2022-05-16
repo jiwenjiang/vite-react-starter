@@ -232,7 +232,7 @@ export default function App() {
   };
 
   const playVideo = (v) => {
-    console.log('🚀 ~ file: grow.tsx ~ line 234 ~ playVideo ~ v', v);
+    // console.log('🚀 ~ file: grow.tsx ~ line 234 ~ playVideo ~ v', v);
     setCurrentVideo(v);
     setShowVideo(true);
   };
@@ -255,7 +255,7 @@ export default function App() {
               <Tabs.TabPane title={v.subject} name={i} key={i}>
                 <div className={styles.tabBox} key={i}>
                   {v.questions[questionIndex]?.carousels?.length > 0 && (
-                    <Swiper autoplay={false}>
+                    <Swiper autoplay={false} >
                       {v.questions[questionIndex].carousels.map((m) => (
                         <Swiper.Item key={m}>
                           {m.includes('mp4') ? (
@@ -263,10 +263,10 @@ export default function App() {
                               autoPlay
                               muted
                               loop
-                              x5-playsinline
+                              x5-playsinline="true"
                               playsInline
-                              webkit-playsinline
-                              x5-video-player-type='h5-page'
+                              webkit-playsinline="true"
+                              x5-video-player-type="h5-page"
                               style={{ width: 320, height: 143 }}>
                               <source src={m} type="video/mp4"></source>
                             </video>

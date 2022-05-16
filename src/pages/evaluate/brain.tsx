@@ -15,6 +15,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Notify, Popup, Radio, Swiper } from 'react-vant';
+import videojs from 'video.js';
 import Baseinfo from './baseinfo';
 import styles from './grow.module.less';
 
@@ -32,6 +33,7 @@ export default function App() {
   const [btnText, setBtnText] = useState('提交答案');
   const [showVideo, setShowVideo] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(false);
+  const videoNode = useRef();
 
   const getList = async () => {
     const res = await request({
@@ -252,6 +254,17 @@ export default function App() {
     setShowVideo(true);
   };
 
+  const autoPlay = (i) => {
+    if (data[active].questions[questionIndex].carousels[i]?.includes('mp4')) {
+      videojs(videoNode.current, {
+        autoplay: true,
+        controls: false,
+        sources: data[active].questions[questionIndex].carousels[i],
+      });
+      console.log('🚀 ~ file: grow.tsx ~ line 241 ~ autoPlay ~ i', i);
+    }
+  };
+
   return (
     <>
       {!baseinfo ? (
@@ -265,27 +278,25 @@ export default function App() {
                 <div className={styles.subject}>{data[active]?.subject}</div>
 
                 {data[active]?.questions[questionIndex]?.carousels?.length > 0 && (
-                  <Swiper autoplay={false}>
+                  <Swiper autoplay={false} onChange={(i) => autoPlay(i)}>
                     {data[active].questions[questionIndex].carousels.map((m) => (
                       <Swiper.Item key={m}>
                         {m.includes('mp4') ? (
-                          <div
-                            className={styles.swiperBox}
-                            onClick={() => playVideo(m)}
-                            style={{
-                              backgroundImage: `url(${m})`,
-                            }}></div>
+                          // <div
+                          //   className={styles.swiperBox}
+                          //   onClick={() => playVideo(m)}
+                          //   style={{
+                          //     backgroundImage: `url(${m})`,
+                          //   }}></div>
+                          <video
+                            ref={videoNode}
+                            muted
+                            loop
+                            x5-playsinline="true"
+                            playsInline
+                            webkit-playsinline="true"
+                            style={{ width: 320, height: 143 }}></video>
                         ) : (
-                          // <video
-                          //   autoPlay
-                          //   muted
-                          //   loop
-                          //   x5-playsinline
-                          //   playsInline
-                          //   webkit-playsinline
-                          //   style={{ width: 320, height: 143 }}>
-                          //   <source src={m} type="video/mp4"></source>
-                          // </video>
                           <div
                             className={styles.swiperBox}
                             style={{
