@@ -307,7 +307,7 @@ export default function App() {
                               x5-playsinline="true"
                               playsInline
                               webkit-playsinline="true"
-                              style={{ width: 320, height: 143 }}></video>
+                              style={{ width: '100%', height: 143 }}></video>
                           ) : (
                             <div
                               className={styles.swiperBox}
