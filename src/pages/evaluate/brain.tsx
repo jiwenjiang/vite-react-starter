@@ -84,7 +84,9 @@ export default function App() {
       setQuestionIndex(0);
     }
     setTimeout(() => {
-      autoPlay(0);
+      if (isAndroid()) {
+        autoPlay(0);
+      }
     });
   };
 

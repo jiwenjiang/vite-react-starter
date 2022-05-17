@@ -3,6 +3,7 @@ import Topbar from '@/comps/TopBar';
 import VideoComp from '@/comps/Video';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
+import { isAndroid } from '@/service/utils';
 import {
   Audio,
   PauseCircleO,
@@ -15,6 +16,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Popup, Radio, Swiper, Tabs } from 'react-vant';
+import videojs from 'video.js';
 import Baseinfo from './baseinfo';
 import styles from './grow.module.less';
 
@@ -31,6 +33,7 @@ export default function App() {
   const age = useRef(1);
   const [showVideo, setShowVideo] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(false);
+  const videoNode = useRef();
 
   const getList = async () => {
     const res = await request({
@@ -75,6 +78,11 @@ export default function App() {
       setActive(active + 1);
       setQuestionIndex(0);
     }
+    setTimeout(() => {
+      if (isAndroid()) {
+        autoPlay(0);
+      }
+    });
   };
 
   const changeVal = (e, q, m) => {
@@ -237,6 +245,28 @@ export default function App() {
     setShowVideo(true);
   };
 
+  const autoPlay = (i) => {
+    if (
+      data[active].questions[questionIndex].carousels[i]?.includes('mp4') &&
+      isAndroid()
+    ) {
+      videojs(
+        videoNode.current,
+        {
+          preload: 'auto',
+          autoplay: 'muted',
+          controls: false,
+          isFullscreen: false,
+          muted: true,
+          sources: data[active].questions[questionIndex].carousels[i],
+        },
+        () => {
+          console.log('play ready');
+        },
+      );
+    }
+  };
+
   return (
     <>
       {!baseinfo ? (
@@ -255,21 +285,27 @@ export default function App() {
               <Tabs.TabPane title={v.subject} name={i} key={i}>
                 <div className={styles.tabBox} key={i}>
                   {v.questions[questionIndex]?.carousels?.length > 0 && (
-                    <Swiper autoplay={false} >
+                    <Swiper autoplay={false} onChange={(i) => autoPlay(i)}>
                       {v.questions[questionIndex].carousels.map((m) => (
                         <Swiper.Item key={m}>
                           {m.includes('mp4') ? (
-                            <video
-                              autoPlay
-                              muted
-                              loop
-                              x5-playsinline="true"
-                              playsInline
-                              webkit-playsinline="true"
-                              x5-video-player-type="h5-page"
-                              style={{ width: 320, height: 143 }}>
-                              <source src={m} type="video/mp4"></source>
-                            </video>
+                            isAndroid() ? (
+                              <video
+                                ref={videoNode}
+                                muted
+                                loop
+                                x5-playsinline="true"
+                                playsInline
+                                webkit-playsinline="true"
+                                style={{ width: 320, height: 143 }}></video>
+                            ) : (
+                              <div
+                                className={styles.swiperBox}
+                                onClick={() => playVideo(m)}
+                                style={{
+                                  backgroundImage: `url(${m})`,
+                                }}></div>
+                            )
                           ) : (
                             <div
                               className={styles.swiperBox}
