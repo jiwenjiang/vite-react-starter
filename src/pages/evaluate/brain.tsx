@@ -3,6 +3,7 @@ import Topbar from '@/comps/TopBar';
 import VideoComp from '@/comps/Video';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
+import { isAndroid } from '@/service/utils';
 import {
   Audio,
   PauseCircleO,
@@ -82,6 +83,9 @@ export default function App() {
       setActive(active + 1);
       setQuestionIndex(0);
     }
+    setTimeout(() => {
+      autoPlay(0);
+    });
   };
 
   const changeVal = (e, q, m) => {
@@ -255,7 +259,10 @@ export default function App() {
   };
 
   const autoPlay = (i) => {
-    if (data[active].questions[questionIndex].carousels[i]?.includes('mp4')) {
+    if (
+      data[active].questions[questionIndex].carousels[i]?.includes('mp4') &&
+      isAndroid()
+    ) {
       videojs(
         videoNode.current,
         {
@@ -270,7 +277,6 @@ export default function App() {
           console.log('play ready');
         },
       );
-      console.log('🚀 ~ file: grow.tsx ~ line 241 ~ autoPlay ~ i', i);
     }
   };
 
@@ -291,20 +297,23 @@ export default function App() {
                     {data[active].questions[questionIndex].carousels.map((m) => (
                       <Swiper.Item key={m}>
                         {m.includes('mp4') ? (
-                          // <div
-                          //   className={styles.swiperBox}
-                          //   onClick={() => playVideo(m)}
-                          //   style={{
-                          //     backgroundImage: `url(${m})`,
-                          //   }}></div>
-                          <video
-                            ref={videoNode}
-                            muted
-                            loop
-                            x5-playsinline="true"
-                            playsInline
-                            webkit-playsinline="true"
-                            style={{ width: 320, height: 143 }}></video>
+                          isAndroid() ? (
+                            <video
+                              ref={videoNode}
+                              muted
+                              loop
+                              x5-playsinline="true"
+                              playsInline
+                              webkit-playsinline="true"
+                              style={{ width: 320, height: 143 }}></video>
+                          ) : (
+                            <div
+                              className={styles.swiperBox}
+                              onClick={() => playVideo(m)}
+                              style={{
+                                backgroundImage: `url(${m})`,
+                              }}></div>
+                          )
                         ) : (
                           <div
                             className={styles.swiperBox}
