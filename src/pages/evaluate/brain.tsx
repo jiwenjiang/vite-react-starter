@@ -4,11 +4,11 @@ import VideoComp from '@/comps/Video';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
 import { isAndroid } from '@/service/utils';
+import luxiang from '@/static/imgs/luxiang.png';
 import {
   Audio,
   PauseCircleO,
   Photograph,
-  PlayCircle,
   PlayCircleO,
   StopCircleO,
   Video
@@ -16,6 +16,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Notify, Popup, Radio, Swiper } from 'react-vant';
+import { cls } from 'reactutils';
 import videojs from 'video.js';
 import Baseinfo from './baseinfo';
 import styles from './grow.module.less';
@@ -245,7 +246,8 @@ export default function App() {
     console.log('🚀 ~ file: grow.tsx ~ line 222 ~ upload ~ file', file);
     data[active].questions[questionIndex].mediaList.push({
       type: MediaType.VIDEO,
-      localData: file,
+      localData: file.url,
+      coverUrl: file.coverUrl,
     });
     data[active].questions[questionIndex].attachments.push({
       type: MediaType.VIDEO,
@@ -311,7 +313,7 @@ export default function App() {
                           ) : (
                             <div
                               className={styles.swiperBox}
-                              onClick={() => playVideo(m)}
+                              // onClick={() => playVideo(m)}
                               style={{
                                 backgroundImage: `url(${m})`,
                               }}></div>
@@ -367,10 +369,11 @@ export default function App() {
                           />
                         ) : v.type === MediaType.VIDEO ? (
                           <div
-                            className={styles.iconBox}
+                            className={cls(styles.iconBox, styles.videoBox)}
+                            style={{ backgroundImage: `url(${v.coverUrl})` }}
                             key={i}
                             onClick={() => playVideo(v.localData)}>
-                            <PlayCircle />
+                            <img src={luxiang} alt="" />
                           </div>
                         ) : (
                           <div className={styles.iconBox} key={i}>

@@ -1,23 +1,23 @@
 import Recorder from '@/comps/Recorder';
 import Topbar from '@/comps/TopBar';
+import VideoComp from '@/comps/Video';
 import { MediaType } from '@/service/const';
 import request from '@/service/request';
 import { GetQueryString } from '@/service/utils';
+import luxiang from '@/static/imgs/luxiang.png';
 import {
   Audio,
   PauseCircleO,
-  Photograph,
-  PlayCircle,
-  PlayCircleO,
+  Photograph, PlayCircleO,
   StopCircleO,
-  Video,
+  Video
 } from '@react-vant/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Field, Form, Popup, Radio } from 'react-vant';
+import { cls } from 'reactutils';
 import Baseinfo from './baseinfo';
 import styles from './grow.module.less';
-import VideoComp from '@/comps/Video';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -226,7 +226,8 @@ export default function App() {
   const upload = (params, file) => {
     data[active].questions[questionIndex].mediaList.push({
       type: MediaType.VIDEO,
-      localData: file,
+      localData: file.url,
+      coverUrl: file.coverUrl,
     });
     data[active].questions[questionIndex].attachments.push({
       type: MediaType.VIDEO,
@@ -279,10 +280,11 @@ export default function App() {
                       <img className={styles.imgs} alt="pic" key={i} src={v.localData} />
                     ) : v.type === MediaType.VIDEO ? (
                       <div
-                        className={styles.iconBox}
+                        className={cls(styles.iconBox, styles.videoBox)}
+                        style={{ backgroundImage: `url(${v.coverUrl})` }}
                         key={i}
                         onClick={() => playVideo(v.localData)}>
-                        <PlayCircle />
+                        <img src={luxiang} alt="" />
                       </div>
                     ) : (
                       <div className={styles.iconBox} key={i}>

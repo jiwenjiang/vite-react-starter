@@ -1,10 +1,9 @@
-import { PauseCircleO, PlayCircleO, StopCircleO } from '@react-vant/icons';
+import request from '@/service/request';
+import VideoRecorder from '@jbleach/react-video-recorder';
+import MediaStreamRecorder from 'msr';
+import * as qiniu from 'qiniu-js';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
-import MediaStreamRecorder from 'msr';
-import request from '@/service/request';
-import * as qiniu from 'qiniu-js';
-import VideoRecorder from '@jbleach/react-video-recorder';
 
 function mergeProps(mergein, mergeto) {
   for (var t in mergeto) {
@@ -206,7 +205,7 @@ function Recorder({ close, uploadCb }) {
           },
           method: 'POST',
         });
-        uploadCb({ serverId: data.id }, data.url);
+        uploadCb({ serverId: data.id }, data);
         // ...
       },
     };
@@ -227,7 +226,6 @@ function Recorder({ close, uploadCb }) {
       <VideoRecorder
         onRecordingComplete={(videoBlob) => {
           // upload2Server(videoBlob)
-          console.log('videoBlob', videoBlob);
           videoFile.current = videoBlob;
         }}
         onConfirm={() => confirmFile()}
